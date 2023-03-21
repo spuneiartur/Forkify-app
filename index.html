@@ -4,113 +4,125 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200;300;400;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="./style.css" />
     <script defer src="./script/main.js"></script>
     <script
       src="https://kit.fontawesome.com/7453df46f4.js"
       crossorigin="anonymous"
     ></script>
-    <title>Document</title>
+    <title>Forkify-App</title>
   </head>
   <body>
     <div class="outer__wrapper">
-      <div class="inner__wrapper _container">
-        <section class="header__section">
-          <div class="nav__bar">
-            <div class="logo__container">
-              <a class="nav__logo">
-                <i class="fa-solid fa-utensils"></i>
-              </a>
-              <a class="nav__title">forkify</a>
-            </div>
-            <div class="search__container">
-              <input class="search__bar" type="text" />
-              <button class="search__btn">
-                <span class="nav__search_icon">
-                  <i class="fa-solid fa-magnifying-glass"></i> search</span
-                >
-              </button>
-            </div>
-            <div class="menu__container">
-              <div class="nav__add_recipe">
-                <i class="fa-regular fa-pen-to-square"></i>
-                <span class="add__recipe_text">add recipe</span>
+      <div class="inner__wrapper">
+        <div class="_container">
+          <section class="header__section">
+            <div class="nav__bar">
+              <div class="logo__container _ibg">
+                <img src="./img/logo.png" alt="Forkify_logo" />
               </div>
-              <div class="nav__bookmarks">
-                <i class="fa-regular fa-bookmark"></i>
-                <span class="add__bookmark_text">bookmarks</span>
+              <div class="search__container">
+                <input
+                  class="search__bar"
+                  type="text"
+                  placeholder="Search over 1,000,000 recipes..."
+                />
+                <button class="search__btn">
+                  <span class="nav__search_icon">
+                    <i class="fa-solid fa-magnifying-glass"></i
+                  ></span>
+                  <span class="nav__search_text">search</span>
+                </button>
               </div>
-            </div>
-          </div>
-        </section>
-        <section class="main__section">
-          <div class="recipe__list_container">
-            <div class="recipe__preview_container">
-              <span class="preview__img_container">
-                <img src="" alt="" />
-              </span>
-              <span class="preview__title"></span>
-              <span class="preview__subtitle"></span>
-            </div>
-          </div>
-          <div class="recipe__display_container">
-            <div class="main__message_container">
-              <span class="main__message_icon"
-                ><i class="fa-regular fa-face-smile"></i>
-              </span>
-              <span class="main__message_text"
-                >Start by searching for a recipe or an ingredient. Have
-                fun!</span
-              >
-            </div>
-            <div class="main__recipe_view_container">
-              <div class="recipe__view_img_container">
-                <img src="" alt="recipe_image" />
-              </div>
-              <div class="recipe__view_header">
-                <div class="recipe__title_container">
-                  <span class="recipe__title"
-                    >CAULIFLOWER PIZZA CRUST (WITH BBQ CHICKEN PIZZA)</span
-                  >
+              <div class="menu__container">
+                <div class="nav__add_recipe">
+                  <i class="fa-regular fa-pen-to-square"></i>
+                  <span class="add__recipe_text">add recipe</span>
                 </div>
-                <div class="timer__container">
-                  <i class="fa-regular fa-clock"></i>
-                  <span class="receipt__time"
-                    ><span class="receipt__timer_value">75</span> minutes</span
-                  >
-                </div>
-                <div class="servings__container">
-                  <i class="fa-solid fa-user-group"></i>
-                  <span class="receipt__servings"
-                    ><span class="receipt__servings_value">4</span>
-                    servings</span
-                  >
-                </div>
-                <div class="modifying__servings_container">
-                  <i class="fa-solid fa-circle-plus"></i>
-                  <i class="fa-solid fa-circle-minus"></i>
-                </div>
-                <div class="bookmark__icon_container">
+                <div class="nav__bookmarks">
                   <i class="fa-regular fa-bookmark"></i>
-                  <!-- <i class="fa-solid fa-bookmark"></i> -->
-                </div>
-              </div>
-              <div class="recipe__view_body">
-                <div class="recipe__body_title">
-                  <h2 class="recipe__title">recipe ingredients</h2>
-                  <ul class="receipt__items">
-                    <li>1 medium head cauliflower cut into florets</li>
-                    <li>0.5 cup mozzarella shredded</li>
-                    <li>Salt and pepper to taste</li>
-                    <li>1 medium head cauliflower cut into florets</li>
-                    <li>0.5 cup mozzarella shredded</li>
-                    <li>Salt and pepper to taste</li>
-                  </ul>
+                  <span class="add__bookmark_text">bookmarks</span>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+          <section class="main__section">
+            <div class="recipe__list_container">
+              <div class="recipe__preview_container">
+                <span class="preview__img_container">
+                  <img src="" alt="" />
+                </span>
+                <span class="preview__title"></span>
+                <span class="preview__subtitle"></span>
+              </div>
+            </div>
+            <div class="recipe__display_container">
+              <div class="main__message_container">
+                <span class="main__message_icon"
+                  ><i class="fa-regular fa-face-smile"></i>
+                </span>
+                <span class="main__message_text"
+                  >Start by searching for a recipe or an ingredient. Have
+                  fun!</span
+                >
+              </div>
+              <div class="main__recipe_view_container">
+                <div class="recipe__view_img_container">
+                  <img src="" alt="recipe_image" />
+                </div>
+                <div class="recipe__view_header">
+                  <div class="recipe__title_container">
+                    <span class="recipe__title"
+                      >CAULIFLOWER PIZZA CRUST (WITH BBQ CHICKEN PIZZA)</span
+                    >
+                  </div>
+                  <div class="timer__container">
+                    <i class="fa-regular fa-clock"></i>
+                    <span class="receipt__time"
+                      ><span class="receipt__timer_value">75</span>
+                      minutes</span
+                    >
+                  </div>
+                  <div class="servings__container">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span class="receipt__servings"
+                      ><span class="receipt__servings_value">4</span>
+                      servings</span
+                    >
+                  </div>
+                  <div class="modifying__servings_container">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-solid fa-circle-minus"></i>
+                  </div>
+                  <div class="bookmark__icon_container">
+                    <i class="fa-regular fa-bookmark"></i>
+                    <!-- <i class="fa-solid fa-bookmark"></i> -->
+                  </div>
+                </div>
+                <div class="recipe__view_body">
+                  <div class="recipe__body_title">
+                    <h2 class="recipe__title">recipe ingredients</h2>
+                    <ul class="receipt__items">
+                      <li>1 medium head cauliflower cut into florets</li>
+                      <li>0.5 cup mozzarella shredded</li>
+                      <li>Salt and pepper to taste</li>
+                      <li>1 medium head cauliflower cut into florets</li>
+                      <li>0.5 cup mozzarella shredded</li>
+                      <li>Salt and pepper to taste</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section class="footer__section"></section>
+        </div>
       </div>
     </div>
   </body>

@@ -1,7 +1,6 @@
 /*Обнуление*/
 
 :root {
-    /* linear-gradient(to right bottom, $color-grad-1, $color-grad-2); */
     --beige-light-main: #F9F5F3;
     --beige-darker: #F2EFEE;
     --white-results: #FFFFFF;
@@ -51,9 +50,13 @@ body {
     -ms-text-size-adjust: 100%;
     -moz-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-    font-family: Lora;
+    font-family: 'Nunito Sans', sans-serif;
     font-size: 14px;
     background-color: #fafafa;
+}
+
+html {
+    font-size: 62.5%;
 }
 
 input,
@@ -108,11 +111,14 @@ h6 {
 
 
 ._container {
-    max-width: 1064px;
+    /* max-width: 1064px; */
     padding: 0 15px;
     margin: 0 auto;
     box-sizing: content-box;
     margin: auto;
+    min-height: 120vh;
+    display: flex;
+    flex-direction: column;
 }
 
 ._ibg {
@@ -140,3 +146,206 @@ h6 {
       $color-grad-2
     );
   } */
+
+
+/* ------------------------- Wrappers ------------------------- */
+
+.outer__wrapper {
+
+    background: linear-gradient(to right bottom, var(--color-grad-1), var(--color-grad-2));
+    padding: 4rem 7rem;
+}
+
+
+
+.inner__wrapper {
+    min-width: 80%;
+
+    background-color: var(--beige-darker);
+    border-radius: 1.5rem;
+
+}
+
+@media(max-width:1300px) {
+    .outer__wrapper {
+        padding: 4rem 4rem;
+    }
+}
+
+@media(max-width:1000px) {
+    .outer__wrapper {
+        padding: 0;
+    }
+
+    .inner__wrapper {
+        border-radius: 0rem;
+    }
+}
+
+
+
+/* ------------------------- Header Section ------------------------- */
+
+
+.header__section {}
+
+.nav__bar {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo__container {
+    width: 14rem;
+    height: 4.6rem;
+    margin: 0 0 0 1.5rem;
+}
+
+.search__container {}
+
+.search__bar {
+    padding: 1.5rem 2.5rem;
+    border-radius: 2rem;
+    width: 40rem;
+    font-size: 1.6rem;
+    box-shadow: 0.1rem 0.1rem #eae7e7;
+}
+
+.search__btn {
+    position: relative;
+    left: -3rem;
+
+    padding: 1.5rem 3rem;
+    background: linear-gradient(to right bottom, var(--color-grad-1), var(--color-grad-2));
+    border-radius: 3rem;
+    font-size: 1.8rem;
+    color: #FFFFFF;
+    text-transform: uppercase;
+
+}
+
+.nav__search_icon {}
+
+.nav__search_text {
+    font-weight: 200;
+    letter-spacing: 0.2px;
+
+}
+
+.fa-magnifying-glass {}
+
+.menu__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+}
+
+.nav__add_recipe {
+    margin: 0 1rem;
+}
+
+.fa-pen-to-square {
+    font-size: 1.4rem;
+    margin: 0 0.5rem;
+}
+
+.add__recipe_text {
+    font-size: 1.4rem;
+}
+
+.nav__bookmarks {
+    margin: 0 1rem;
+}
+
+.fa-bookmark {
+    margin: 0 0.5rem;
+}
+
+.add__bookmark_text {}
+
+
+/* ------------------------- Main section ------------------------- */
+
+
+.main__section {
+    display: grid;
+    grid-template: auto / 0.3fr 0.7fr;
+    height: 100%;
+    flex: 1 0 auto;
+}
+
+.recipe__list_container {
+    grid-column: 1 / span 1;
+    background-color: #FFFFFF;
+}
+
+.recipe__preview_container {}
+
+.preview__img_container {}
+
+.preview__title {}
+
+.preview__subtitle {}
+
+.recipe__display_container {
+    grid-column: 2 / span 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main__message_container {}
+
+.main__message_icon {}
+
+.fa-face-smile {}
+
+.main__message_text {}
+
+.main__recipe_view_container {}
+
+.recipe__view_img_container {}
+
+.recipe__view_header {}
+
+.recipe__title_container {}
+
+.recipe__title {}
+
+.timer__container {}
+
+.fa-clock {}
+
+.receipt__time {}
+
+.receipt__timer_value {}
+
+.servings__container {}
+
+.fa-user-group {}
+
+.receipt__servings {}
+
+.receipt__servings_value {}
+
+.modifying__servings_container {}
+
+.fa-circle-plus {}
+
+.fa-circle-minus {}
+
+.bookmark__icon_container {}
+
+.recipe__view_body {}
+
+.recipe__body_title {}
+
+.receipt__items {}
+
+/* ---------------- Footer Section --------------- */
+
+.footer__section {}
