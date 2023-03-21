@@ -54,34 +54,81 @@
           </section>
           <section class="main__section">
             <div class="recipe__list_container">
-              <div class="recipe__preview_container">
-                <span class="preview__img_container">
-                  <img src="" alt="" />
-                </span>
-                <span class="preview__title"></span>
-                <span class="preview__subtitle"></span>
+              <div class="recipe__list_flex">
+                <div class="recipe__preview_container">
+                  <div class="recipe__list_element">
+                    <div class="preview__img_container _ibg">
+                      <img src="./img/favicon.png" alt="recipe_img_preview" />
+                    </div>
+                    <span class="preview__title"
+                      >Cauliflower Pizza Crust (with bbq chicken pizza)</span
+                    >
+                    <span class="preview__subtitle">A spicy perpective</span>
+                  </div>
+                  <div class="recipe__list_element">
+                    <div class="preview__img_container _ibg">
+                      <img src="./img/favicon.png" alt="recipe_img_preview" />
+                    </div>
+                    <span class="preview__title"
+                      >Cauliflower Pizza Crust (with bbq chicken pizza)</span
+                    >
+                    <span class="preview__subtitle">A spicy perpective</span>
+                  </div>
+                  <div class="recipe__list_element">
+                    <div class="preview__img_container _ibg">
+                      <img src="./img/favicon.png" alt="recipe_img_preview" />
+                    </div>
+                    <span class="preview__title"
+                      >Cauliflower Pizza Crust (with bbq chicken pizza)</span
+                    >
+                    <span class="preview__subtitle">A spicy perpective</span>
+                  </div>
+                </div>
+                <div class="recipe__list_pagination">
+                  <div class="pagination__btn_container">
+                    <button class="pagination__btn pagination__btn--left">
+                      <span class="pagination__btn_text"
+                        ><span class="pagination__arrow">&larr;</span> Page 1
+                      </span>
+                    </button>
+                    <button class="pagination__btn pagination__btn--right">
+                      <span class="pagination__btn_text"
+                        >Page 3 <span class="pagination__arrow">&rarr;</span>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+                <div class="recipe__list_footer_container">
+                  <span class="list__footer_text"
+                    >© Copyright by Jonas Schmedtmann. Use for learning or your
+                    portfolio. Don't use to teach. Don't claim as your
+                    own.</span
+                  >
+                </div>
               </div>
             </div>
             <div class="recipe__display_container">
-              <div class="main__message_container">
+              <!-- <div class="main__message_container">
                 <span class="main__message_icon"
                   ><i class="fa-regular fa-face-smile"></i>
                 </span>
-                <span class="main__message_text"
-                  >Start by searching for a recipe or an ingredient. Have
-                  fun!</span
-                >
-              </div>
-              <div class="main__recipe_view_container">
-                <div class="recipe__view_img_container">
-                  <img src="" alt="recipe_image" />
+                <div class="main__message_text">
+                  <span class="main__message_text"
+                    >Start by searching for a recipe or an ingredient. Have
+                    fun!</span
+                  >
                 </div>
-                <div class="recipe__view_header">
+              </div> -->
+              <div class="main__recipe_view_container">
+                <div class="recipe__view_img_container _ibg">
+                  <img src="./img/food_image.jpg" alt="recipe_image" />
                   <div class="recipe__title_container">
                     <span class="recipe__title"
                       >CAULIFLOWER PIZZA CRUST (WITH BBQ CHICKEN PIZZA)</span
                     >
                   </div>
+                </div>
+                <div class="recipe__view_header">
                   <div class="timer__container">
                     <i class="fa-regular fa-clock"></i>
                     <span class="receipt__time"
@@ -101,21 +148,41 @@
                     <i class="fa-solid fa-circle-minus"></i>
                   </div>
                   <div class="bookmark__icon_container">
-                    <i class="fa-regular fa-bookmark"></i>
-                    <!-- <i class="fa-solid fa-bookmark"></i> -->
+                    <div class="bookmark__icon_background">
+                      <i class="fa-regular fa-bookmark"></i>
+                      <!-- <i class="fa-solid fa-bookmark"></i> -->
+                    </div>
                   </div>
                 </div>
                 <div class="recipe__view_body">
                   <div class="recipe__body_title">
-                    <h2 class="recipe__title">recipe ingredients</h2>
-                    <ul class="receipt__items">
-                      <li>1 medium head cauliflower cut into florets</li>
-                      <li>0.5 cup mozzarella shredded</li>
-                      <li>Salt and pepper to taste</li>
-                      <li>1 medium head cauliflower cut into florets</li>
-                      <li>0.5 cup mozzarella shredded</li>
-                      <li>Salt and pepper to taste</li>
-                    </ul>
+                    <h2 class="recipe__ingredients_title">
+                      recipe ingredients
+                    </h2>
+                  </div>
+                  <ul class="receipt__items">
+                    <li>1 medium head cauliflower cut into florets</li>
+                    <li>0.5 cup mozzarella shredded</li>
+                    <li>Salt and pepper to taste</li>
+                    <li>1 medium head cauliflower cut into florets</li>
+                    <li>0.5 cup mozzarella shredded</li>
+                    <li>Salt and pepper to taste</li>
+                  </ul>
+                </div>
+                <div class="recipe__view_footer">
+                  <div class="recipe__footer_container">
+                    <div class="recipe__footer_title">How to cook it</div>
+                    <div class="recipe__footer_subtitle">
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                      Animi suscipit ratione est. Lorem ipsum dolor sit, amet
+                      consectetur adipisicing elit. Animi suscipit ratione est.
+                    </div>
+                    <div class="recipe__footer_btn_container">
+                      <div class="recipe__footer_btn">
+                        <span class="footer__btn_text">Directions</span>
+                        <span class="footer__btn_icon">&rarr;</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
