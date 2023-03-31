@@ -1,0 +1,14 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Forkify is a platform for searching and keeping recipes",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "author": "Spunei Artur",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  }
+}
