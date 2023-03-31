@@ -557,6 +557,18 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"11CQn":[function(require,module,exports) {
+var _controller = require("./controller");
+
+},{"./controller":"MC2Vq"}],"MC2Vq":[function(require,module,exports) {
+class Controller {
+    constructor(){}
+}
+async function getRecipe() {
+    const res = await fetch("https://forkify-api.herokuapp.com/api/search?q=pizza");
+    const { recipes  } = await res.json();
+    console.log(recipes);
+}
+getRecipe();
 
 },{}]},["fB43h","11CQn"], "11CQn", "parcelRequire3a11")
 
