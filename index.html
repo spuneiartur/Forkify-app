@@ -16,7 +16,7 @@
       crossorigin="anonymous"
     ></script>
     <script type="module" src="./src/script/mobile.js"></script>
-    <script type="module" src="./src/script/app.js"></script>
+    <script type="module" src="./src/script/controller.js"></script>
     <title>Forkify-App</title>
   </head>
   <body>
@@ -28,19 +28,19 @@
               <div class="logo__container _ibg">
                 <img src="./src/img/logo.png" alt="Forkify_logo" />
               </div>
-              <div class="search__container">
+              <form class="search__container">
                 <input
                   class="search__bar"
                   type="text"
                   placeholder="Search over 1,000,000 recipes..."
                 />
-                <button class="search__btn">
+                <button class="search__btn" type="submit">
                   <span class="nav__search_icon">
                     <i class="fa-solid fa-magnifying-glass"></i
                   ></span>
                   <span class="nav__search_text">search</span>
                 </button>
-              </div>
+              </form>
               <div class="menu__container">
                 <div class="nav__add_recipe">
                   <i class="fa-regular fa-pen-to-square"></i>

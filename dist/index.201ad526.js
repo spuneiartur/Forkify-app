@@ -557,18 +557,62 @@ function hmrAccept(bundle, id) {
 }
 
 },{}],"11CQn":[function(require,module,exports) {
-var _controller = require("./controller");
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _controllerJs = require("./controller.js");
+var _controllerJsDefault = parcelHelpers.interopDefault(_controllerJs);
+// Variables ---------------------------------------------------------
+// Event Handlers ---------------------------------------------------------
+searchForm.addEventListener("submit", function(e) {
+    e.preventDefault();
+    console.log(e.target);
+});
 
-},{"./controller":"MC2Vq"}],"MC2Vq":[function(require,module,exports) {
+},{"./controller.js":"MC2Vq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"MC2Vq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
 class Controller {
     constructor(){}
+    async searchRecipe(keyword) {
+        try {
+            const res = await fetch(`https://forkify-api.herokuapp.com/api/search?q=${keyword}`);
+            const { recipes  } = await res.json();
+            return recipes;
+        } catch (err) {
+            throw err;
+        }
+    }
 }
-async function getRecipe() {
-    const res = await fetch("https://forkify-api.herokuapp.com/api/search?q=pizza");
-    const { recipes  } = await res.json();
-    console.log(recipes);
-}
-getRecipe();
+exports.default = new Controller();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}]},["fB43h","11CQn"], "11CQn", "parcelRequire3a11")
 
