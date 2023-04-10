@@ -363,9 +363,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .pagination__btn_container {
-  justify-content: space-between;
-  margin: 3rem;
+  margin: 6rem 3rem;
   display: flex;
+  position: relative;
 }
 
 .pagination__btn {
@@ -375,6 +375,7 @@ h1, h2, h3, h4, h5, h6 {
   padding: .5rem 1rem;
   font-weight: 700;
   transition: all .3s;
+  position: absolute;
 }
 
 @media (max-width: 900px) {
@@ -385,6 +386,14 @@ h1, h2, h3, h4, h5, h6 {
 
 .pagination__btn:hover {
   background-color: var(--beige-darker-main);
+}
+
+.pagination__btn--left {
+  left: 0;
+}
+
+.pagination__btn--right {
+  right: 0;
 }
 
 .pagination__arrow {

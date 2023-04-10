@@ -470,12 +470,12 @@ h6 {
 
 .pagination__btn_container {
     display: flex;
-    justify-content: space-between;
-    margin: 3rem 3rem;
-
+    margin: 6rem 3rem;
+    position: relative;
 }
 
 .pagination__btn {
+    position: absolute;
     padding: 0.5rem 1rem;
     background-color: var(--beige-light);
     border-radius: 1.5rem;
@@ -496,7 +496,13 @@ h6 {
 
 }
 
-.pagination__btn--left {}
+.pagination__btn--left {
+    left: 0;
+}
+
+.pagination__btn--right {
+    right: 0;
+}
 
 .pagination__btn_text {}
 
