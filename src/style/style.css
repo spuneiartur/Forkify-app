@@ -135,6 +135,33 @@ h6 {
     object-fit: cover;
 }
 
+.loading__animation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 0;
+}
+
+.spinner {
+    height: 6.4rem;
+    width: 6.4rem;
+    border: 0.8rem solid;
+    border-color: var(--color-grad-2) transparent var(--color-grad-2) transparent;
+    border-radius: 50%;
+    animation: spinner-anim 1.2s linear infinite;
+}
+
+@keyframes spinner-anim {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+
+}
+
 
 /* span {
     -webkit-box-decoration-break: clone;
@@ -407,6 +434,7 @@ h6 {
 .recipe__list_container {
     grid-column: 1 / span 1;
     background-color: #FFFFFF;
+
 }
 
 .recipe__list_flex {
