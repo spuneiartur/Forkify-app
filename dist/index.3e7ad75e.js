@@ -564,12 +564,17 @@ var _moduleJs = require("./module.js");
 var _moduleJsDefault = parcelHelpers.interopDefault(_moduleJs);
 var _recipePreviewJs = require("./views/recipePreview.js");
 var _recipePreviewJsDefault = parcelHelpers.interopDefault(_recipePreviewJs);
+var _animationViewJs = require("./views/animationView.js");
+var _animationViewJsDefault = parcelHelpers.interopDefault(_animationViewJs);
 function App() {
     async function controlSearch() {
         try {
             const query = (0, _searchViewJsDefault.default).getQuery();
+            (0, _recipePreviewJsDefault.default).clearList();
+            (0, _animationViewJsDefault.default).startAnimation();
             await (0, _moduleJsDefault.default).loadRecipes(query);
             console.log((0, _moduleJsDefault.default).state.recipes);
+            (0, _animationViewJsDefault.default).endAnimation();
             (0, _recipePreviewJsDefault.default).renderView((0, _moduleJsDefault.default).state);
         } catch (err) {
             console.error(err);
@@ -587,7 +592,7 @@ function App() {
 }
 App();
 
-},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bYnrN":[function(require,module,exports) {
+},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/animationView.js":"8buBS"}],"bYnrN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
@@ -699,6 +704,9 @@ class RecipePreview {
     </div>`);
         return markup;
     }
+    clearList() {
+        this._recipesListContainer.innerHTML = "";
+    }
     renderView(state) {
         this._prevBtn.classList.remove("hidden");
         this._nextBtn.classList.remove("hidden");
@@ -729,6 +737,20 @@ class RecipePreview {
     }
 }
 exports.default = new RecipePreview();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8buBS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class AnimationView {
+    _spinnerContainer = document.querySelector(".loading__animation");
+    startAnimation() {
+        this._spinnerContainer.classList.remove("hidden");
+    }
+    endAnimation() {
+        this._spinnerContainer.classList.add("hidden");
+    }
+}
+exports.default = new AnimationView();
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["cI5Ua","MC2Vq"], "MC2Vq", "parcelRequire3a11")
 
