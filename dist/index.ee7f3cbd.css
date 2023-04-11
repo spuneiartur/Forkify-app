@@ -345,6 +345,10 @@ h1, h2, h3, h4, h5, h6 {
   grid-area: 1 / 1 / span 2 / span 1;
 }
 
+.preview__img_container img {
+  border-radius: 50%;
+}
+
 .preview__title {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -394,6 +398,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .pagination__btn--right {
   right: 0;
+}
+
+.hidden {
+  display: none;
 }
 
 .pagination__arrow {

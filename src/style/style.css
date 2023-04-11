@@ -441,6 +441,11 @@ h6 {
     grid-column: 1 / span 1;
     width: 6rem;
     height: 6rem;
+
+}
+
+.preview__img_container img {
+    border-radius: 50%;
 }
 
 .preview__title {
@@ -498,10 +503,17 @@ h6 {
 
 .pagination__btn--left {
     left: 0;
+
 }
 
 .pagination__btn--right {
     right: 0;
+
+
+}
+
+.hidden {
+    display: none;
 }
 
 .pagination__btn_text {}

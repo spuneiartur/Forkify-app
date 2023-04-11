@@ -6,13 +6,16 @@ function App() {
     try {
       const query = searchView.getQuery();
       await module.loadRecipes(query);
-      console.log(module.recipes);
+      console.log(module.state.recipes);
+      recipePreview.renderView(module.state);
     } catch (err) {
       console.error(err);
     }
   }
 
-  function controlPagination() {}
+  function controlPagination(goToPage) {
+    module.loadPageResults(goToPage);
+  }
 
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);

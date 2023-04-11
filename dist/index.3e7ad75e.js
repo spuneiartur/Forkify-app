@@ -569,12 +569,15 @@ function App() {
         try {
             const query = (0, _searchViewJsDefault.default).getQuery();
             await (0, _moduleJsDefault.default).loadRecipes(query);
-            console.log((0, _moduleJsDefault.default).recipes);
+            console.log((0, _moduleJsDefault.default).state.recipes);
+            (0, _recipePreviewJsDefault.default).renderView((0, _moduleJsDefault.default).state);
         } catch (err) {
             console.error(err);
         }
     }
-    function controlPagination() {}
+    function controlPagination(goToPage) {
+        (0, _moduleJsDefault.default).loadPageResults(goToPage);
+    }
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
         (0, _recipePreviewJsDefault.default).addHandlerPagination(controlPagination);
@@ -645,8 +648,18 @@ class Module {
         currentPage: 1,
         resultsPerPage: (0, _envDefault.default)
     };
-    loadPage(goToPage) {
+    loadPageResults(goToPage) {
         const maxPage = Math.ceil(this.state.recipes.length / this.state.resultsPerPage);
+        if (goToPage > 1 && goToPage < maxPage) {
+            const pageResults = this.state.recipes.slice((goToPage - 1) * 10 + 1, goToPage * 10 + 1);
+            this.state.currentPage = goToPage;
+            console.log(pageResults);
+            return {
+                pageResults: pageResults,
+                currentPage: this.state.currentPage,
+                maxPage: maxPage
+            };
+        } else return undefined;
     }
     async loadRecipes(query) {
         try {
@@ -662,26 +675,53 @@ class Module {
 }
 exports.default = new Module();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./env":"ieYb1"}],"ieYb1":[function(require,module,exports) {
-const RESULT_PER_PAGE = 10;
+},{"./env":"ieYb1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ieYb1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+exports.default = RESULT_PER_PAGE = 10;
 
-},{}],"6mrXi":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6mrXi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class RecipePreview {
     _prevBtn = document.querySelector(".pagination__btn--left");
     _nextBtn = document.querySelector(".pagination__btn--right");
     _buttons = document.querySelectorAll(".pagination__btn");
+    _recipesListContainer = document.querySelector(".recipe__preview_container");
+    _data;
     constructor(){}
-    renderContent(recipes) {}
-    renderView() {
-        const paginationHTML = ``;
+    renderContent(recipes) {
+        let markup = "";
+        recipes.forEach((recipe)=>markup += `
+    <div class="recipe__list_element">
+      <div class="preview__img_container _ibg">
+        <img
+          src="${recipe.image_url}"
+          alt="recipe_img_preview"
+        />
+      </div>
+      <span class="preview__title"
+        >${recipe.title}</span
+      >
+      <span class="preview__subtitle">${recipe.publisher}</span>
+    </div>`);
+        return markup;
+    }
+    renderView(state) {
+        this._prevBtn.classList.remove("hidden");
+        this._nextBtn.classList.remove("hidden");
+        if (state.currentPage === 1) this._prevBtn.classList.add("hidden");
+        if (state.currentPage === Math.ceil(state.recipes.length / state.resultPerPage)) this._nextBtn.classList.add("hidden");
+        const markup = this.renderContent(state.recipes);
+        this._recipesListContainer.innerHTML = "";
+        this._recipesListContainer.insertAdjacentHTML("afterbegin", markup);
     }
     addHandlerPagination(handler) {
         function eventFunction(e) {
             if (!e.target.closest(".pagination__btn")) return;
             const goToPage = e.target.closest(".pagination__btn").dataset.info;
-            handler(goToPage);
+            this._data = handler(goToPage);
+            if (this._data && this._data.pageResults.length) this.renderView();
         }
         this._buttons.forEach((btn)=>btn.addEventListener("click", eventFunction.bind(this)));
     }
