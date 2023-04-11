@@ -27,7 +27,9 @@ class RecipePreview {
 
     return markup;
   }
-
+  clearList() {
+    this._recipesListContainer.innerHTML = '';
+  }
   renderView(state) {
     this._prevBtn.classList.remove('hidden');
     this._nextBtn.classList.remove('hidden');

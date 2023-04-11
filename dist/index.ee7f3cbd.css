@@ -97,6 +97,32 @@ h1, h2, h3, h4, h5, h6 {
   left: 0;
 }
 
+.loading__animation {
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 0;
+  display: flex;
+}
+
+.spinner {
+  height: 6.4rem;
+  width: 6.4rem;
+  border: .8rem solid;
+  border-color: var(--color-grad-2) transparent var(--color-grad-2) transparent;
+  border-radius: 50%;
+  animation: 1.2s linear infinite spinner-anim;
+}
+
+@keyframes spinner-anim {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .outer__wrapper {
   background: linear-gradient(to right bottom, var(--color-grad-1), var(--color-grad-2));
   padding: 4rem 7rem;
