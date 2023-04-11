@@ -577,6 +577,7 @@ function App() {
     }
     function controlPagination(goToPage) {
         (0, _moduleJsDefault.default).loadPageResults(goToPage);
+        (0, _recipePreviewJsDefault.default).renderView((0, _moduleJsDefault.default).state);
     }
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
@@ -650,16 +651,7 @@ class Module {
     };
     loadPageResults(goToPage) {
         const maxPage = Math.ceil(this.state.recipes.length / this.state.resultsPerPage);
-        if (goToPage > 1 && goToPage < maxPage) {
-            const pageResults = this.state.recipes.slice((goToPage - 1) * 10 + 1, goToPage * 10 + 1);
-            this.state.currentPage = goToPage;
-            console.log(pageResults);
-            return {
-                pageResults: pageResults,
-                currentPage: this.state.currentPage,
-                maxPage: maxPage
-            };
-        } else return undefined;
+        if (goToPage >= 1 && goToPage <= maxPage) this.state.currentPage = goToPage;
     }
     async loadRecipes(query) {
         try {
@@ -678,7 +670,7 @@ exports.default = new Module();
 },{"./env":"ieYb1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ieYb1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-exports.default = RESULT_PER_PAGE = 10;
+exports.default = RESULT_PER_PAGE = 12;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6mrXi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -711,17 +703,27 @@ class RecipePreview {
         this._prevBtn.classList.remove("hidden");
         this._nextBtn.classList.remove("hidden");
         if (state.currentPage === 1) this._prevBtn.classList.add("hidden");
-        if (state.currentPage === Math.ceil(state.recipes.length / state.resultPerPage)) this._nextBtn.classList.add("hidden");
-        const markup = this.renderContent(state.recipes);
+        if (state.currentPage === Math.ceil(state.recipes.length / state.resultsPerPage)) this._nextBtn.classList.add("hidden");
+        const pageResults = state.recipes.slice((state.currentPage - 1) * state.resultsPerPage + 1, state.currentPage * state.resultsPerPage + 1);
+        const markup = this.renderContent(pageResults);
         this._recipesListContainer.innerHTML = "";
         this._recipesListContainer.insertAdjacentHTML("afterbegin", markup);
+        this._prevBtn.dataset.info = (parseInt(state.currentPage) - 1).toString();
+        this._prevBtn.innerHTML = "";
+        this._prevBtn.insertAdjacentHTML("afterbegin", `<span class="pagination__btn_text">
+        <span class="pagination__arrow">&larr;</span> Page ${this._prevBtn.dataset.info}
+      </span>`);
+        this._nextBtn.dataset.info = (parseInt(state.currentPage) + 1).toString();
+        this._nextBtn.innerHTML = "";
+        this._nextBtn.insertAdjacentHTML("afterbegin", `<span class="pagination__btn_text">
+        <span class="pagination__arrow">&rarr;</span> Page ${this._nextBtn.dataset.info}
+      </span>`);
     }
     addHandlerPagination(handler) {
         function eventFunction(e) {
             if (!e.target.closest(".pagination__btn")) return;
-            const goToPage = e.target.closest(".pagination__btn").dataset.info;
-            this._data = handler(goToPage);
-            if (this._data && this._data.pageResults.length) this.renderView();
+            const goToPage = parseInt(e.target.closest(".pagination__btn").dataset.info);
+            handler(goToPage);
         }
         this._buttons.forEach((btn)=>btn.addEventListener("click", eventFunction.bind(this)));
     }

@@ -36,25 +36,44 @@ class RecipePreview {
     }
     if (
       state.currentPage ===
-      Math.ceil(state.recipes.length / state.resultPerPage)
+      Math.ceil(state.recipes.length / state.resultsPerPage)
     ) {
       this._nextBtn.classList.add('hidden');
     }
-
-    const markup = this.renderContent(state.recipes);
+    const pageResults = state.recipes.slice(
+      (state.currentPage - 1) * state.resultsPerPage + 1,
+      state.currentPage * state.resultsPerPage + 1
+    );
+    const markup = this.renderContent(pageResults);
     this._recipesListContainer.innerHTML = '';
     this._recipesListContainer.insertAdjacentHTML('afterbegin', markup);
+    this._prevBtn.dataset.info = (parseInt(state.currentPage) - 1).toString();
+
+    this._prevBtn.innerHTML = '';
+    this._prevBtn.insertAdjacentHTML(
+      'afterbegin',
+      `<span class="pagination__btn_text">
+        <span class="pagination__arrow">&larr;</span> Page ${this._prevBtn.dataset.info}
+      </span>`
+    );
+
+    this._nextBtn.dataset.info = (parseInt(state.currentPage) + 1).toString();
+    this._nextBtn.innerHTML = '';
+    this._nextBtn.insertAdjacentHTML(
+      'afterbegin',
+      `<span class="pagination__btn_text">
+        <span class="pagination__arrow">&rarr;</span> Page ${this._nextBtn.dataset.info}
+      </span>`
+    );
   }
 
   addHandlerPagination(handler) {
     function eventFunction(e) {
       if (!e.target.closest('.pagination__btn')) return;
-
-      const goToPage = e.target.closest('.pagination__btn').dataset.info;
-      this._data = handler(goToPage);
-      if (this._data && this._data.pageResults.length) {
-        this.renderView();
-      }
+      const goToPage = parseInt(
+        e.target.closest('.pagination__btn').dataset.info
+      );
+      handler(goToPage);
     }
 
     this._buttons.forEach(btn =>

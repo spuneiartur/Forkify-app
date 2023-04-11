@@ -15,6 +15,7 @@ function App() {
 
   function controlPagination(goToPage) {
     module.loadPageResults(goToPage);
+    recipePreview.renderView(module.state);
   }
 
   function addingHandlers() {

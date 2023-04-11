@@ -10,20 +10,8 @@ class Module {
     const maxPage = Math.ceil(
       this.state.recipes.length / this.state.resultsPerPage
     );
-    if (goToPage > 1 && goToPage < maxPage) {
-      const pageResults = this.state.recipes.slice(
-        (goToPage - 1) * 10 + 1,
-        goToPage * 10 + 1
-      );
+    if (goToPage >= 1 && goToPage <= maxPage) {
       this.state.currentPage = goToPage;
-      console.log(pageResults);
-      return {
-        pageResults: pageResults,
-        currentPage: this.state.currentPage,
-        maxPage: maxPage,
-      };
-    } else {
-      return undefined;
     }
   }
 

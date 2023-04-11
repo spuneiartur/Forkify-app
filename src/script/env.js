@@ -1,1 +1,1 @@
-export default RESULT_PER_PAGE = 10;
+export default RESULT_PER_PAGE = 12;
