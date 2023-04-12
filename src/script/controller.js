@@ -2,6 +2,7 @@ import searchView from './views/searchView.js';
 import module from './module.js';
 import recipePreview from './views/recipePreview.js';
 import animationView from './views/animationView.js';
+import recipeView from './views/recipeView.js';
 function App() {
   async function controlSearch() {
     try {
@@ -22,9 +23,13 @@ function App() {
     recipePreview.renderView(module.state);
   }
 
+  function controlHashChange(id) {}
+
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);
     recipePreview.addHandlerPagination(controlPagination);
+    recipePreview.addHandlerPreviewClick();
+    recipeView.addHandlerHashChange(handler);
   }
   addingHandlers();
 }
