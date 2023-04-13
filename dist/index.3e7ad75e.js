@@ -564,40 +564,50 @@ var _moduleJs = require("./module.js");
 var _moduleJsDefault = parcelHelpers.interopDefault(_moduleJs);
 var _recipePreviewJs = require("./views/recipePreview.js");
 var _recipePreviewJsDefault = parcelHelpers.interopDefault(_recipePreviewJs);
-var _animationViewJs = require("./views/animationView.js");
-var _animationViewJsDefault = parcelHelpers.interopDefault(_animationViewJs);
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
 function App() {
+    location.hash = "";
     async function controlSearch() {
         try {
             const query = (0, _searchViewJsDefault.default).getQuery();
-            (0, _recipePreviewJsDefault.default).clearList();
-            (0, _animationViewJsDefault.default).startAnimation();
+            (0, _recipePreviewJsDefault.default).clearHTML();
+            (0, _recipePreviewJsDefault.default).startAnimation();
             await (0, _moduleJsDefault.default).loadRecipes(query);
-            console.log((0, _moduleJsDefault.default).state.recipes);
-            (0, _animationViewJsDefault.default).endAnimation();
+            (0, _moduleJsDefault.default).state.currentPage = 1;
             (0, _recipePreviewJsDefault.default).renderView((0, _moduleJsDefault.default).state);
         } catch (err) {
             console.error(err);
+        } finally{
+            (0, _recipePreviewJsDefault.default).endAnimation();
         }
     }
     function controlPagination(goToPage) {
         (0, _moduleJsDefault.default).loadPageResults(goToPage);
         (0, _recipePreviewJsDefault.default).renderView((0, _moduleJsDefault.default).state);
     }
-    function controlHashChange(id) {}
+    async function controlHashChange(id) {
+        try {
+            (0, _recipeViewJsDefault.default).clearHTML();
+            (0, _recipeViewJsDefault.default).startAnimation();
+            (0, _recipeViewJsDefault.default).renderView(await (0, _moduleJsDefault.default).loadRecipe(id));
+        } catch (err) {
+            throw err;
+        } finally{
+            (0, _recipeViewJsDefault.default).endAnimation();
+        }
+    }
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
         (0, _recipePreviewJsDefault.default).addHandlerPagination(controlPagination);
         (0, _recipePreviewJsDefault.default).addHandlerPreviewClick();
-        (0, _recipeViewJsDefault.default).addHandlerHashChange(handler);
+        (0, _recipeViewJsDefault.default).addHandlerHashChange(controlHashChange);
     }
     addingHandlers();
 }
 App();
 
-},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/animationView.js":"8buBS","./views/recipeView.js":"hgTkH"}],"bYnrN":[function(require,module,exports) {
+},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipeView.js":"hgTkH"}],"bYnrN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
@@ -652,23 +662,38 @@ exports.export = function(dest, destName, get) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _env = require("./env");
-var _envDefault = parcelHelpers.interopDefault(_env);
+var _recipePreview = require("./views/recipePreview");
+var _recipePreviewDefault = parcelHelpers.interopDefault(_recipePreview);
 class Module {
+    activeRecipe;
     state = {
         recipes: [],
         currentPage: 1,
-        resultsPerPage: (0, _envDefault.default)
+        resultsPerPage: (0, _env.RESULT_PER_PAGE)
     };
     loadPageResults(goToPage) {
         const maxPage = Math.ceil(this.state.recipes.length / this.state.resultsPerPage);
         if (goToPage >= 1 && goToPage <= maxPage) this.state.currentPage = goToPage;
     }
+    async loadRecipe(id) {
+        try {
+            const result = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/${id}`);
+            if (!result.ok) throw new Error("The recipe was not found \uD83D\uDCA5");
+            const { data  } = await result.json();
+            const { recipe  } = data;
+            this.activeRecipe = recipe;
+            return recipe;
+        } catch (err) {
+            throw err;
+        }
+    }
     async loadRecipes(query) {
         try {
-            const res = await fetch(`https://forkify-api.herokuapp.com/api/search?q=${query}`);
+            const res = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes?search=${query}`);
             const { ok  } = res;
             if (!ok) throw new Error("Receipt was not found for your input...\uD83D\uDCA5");
-            const { recipes  } = await res.json();
+            const { data  } = await res.json();
+            const { recipes  } = data;
             this.state.recipes = recipes;
         } catch (err) {
             throw err;
@@ -677,10 +702,13 @@ class Module {
 }
 exports.default = new Module();
 
-},{"./env":"ieYb1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ieYb1":[function(require,module,exports) {
+},{"./env":"ieYb1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipePreview":"6mrXi"}],"ieYb1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-exports.default = RESULT_PER_PAGE = 12;
+parcelHelpers.export(exports, "RESULT_PER_PAGE", ()=>RESULT_PER_PAGE);
+parcelHelpers.export(exports, "API_KEY", ()=>API_KEY);
+const RESULT_PER_PAGE = 12;
+const API_KEY = "1de998c7-6718-4bd4-878c-3ceb6ed71ace";
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"6mrXi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -691,11 +719,17 @@ class RecipePreview {
     _buttons = document.querySelectorAll(".pagination__btn");
     _recipesListContainer = document.querySelector(".recipe__preview_container");
     _recipeElement = document.querySelector(".recipe__list_element");
-    constructor(){}
+    _spinnerContainer = document.querySelector(".loading__animation_search-results");
+    startAnimation() {
+        this._spinnerContainer.classList.remove("hidden");
+    }
+    endAnimation() {
+        this._spinnerContainer.classList.add("hidden");
+    }
     renderContent(recipes) {
         let markup = "";
         recipes.forEach((recipe)=>markup += `
-    <div class="recipe__list_element" data-id="${recipe.recipe_id}">
+    <div class="recipe__list_element" data-id="${recipe.id}">
       <div class="preview__img_container _ibg">
         <img
           src="${recipe.image_url}"
@@ -709,7 +743,7 @@ class RecipePreview {
     </div>`);
         return markup;
     }
-    clearList() {
+    clearHTML() {
         this._recipesListContainer.innerHTML = "";
     }
     renderView(state) {
@@ -742,41 +776,359 @@ class RecipePreview {
     }
     addHandlerPreviewClick() {
         this._recipesListContainer.addEventListener("click", function(e) {
-            console.log("I was called!");
             if (!e.target.closest(".recipe__list_element")) return;
             const element = e.target.closest(".recipe__list_element");
-            window.history.pushState(null, "", `#${element.dataset.id}`);
+            window.location.hash = element.dataset.id;
         });
     }
 }
 exports.default = new RecipePreview();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8buBS":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hgTkH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-class AnimationView {
-    _spinnerContainer = document.querySelector(".loading__animation");
+var _fractional = require("fractional");
+class RecipeView {
+    _bodyContainer = document.querySelector(".main__recipe_view_container");
+    _spinnerContainer = document.querySelector(".loading__animation_recipe-view");
     startAnimation() {
         this._spinnerContainer.classList.remove("hidden");
     }
     endAnimation() {
         this._spinnerContainer.classList.add("hidden");
     }
-}
-exports.default = new AnimationView();
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"hgTkH":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-class RecipeView {
+    clearHTML() {
+        this._bodyContainer.innerHTML = "";
+    }
+    renderContent(recipe) {
+        const markup = `
+    <div class="recipe__view_img_container _ibg">
+                  <img src="${recipe.image_url}" alt="recipe_image" />
+                  <div class="recipe__title_container">
+                    <span class="recipe__title"
+                      >${recipe.title}</span
+                    >
+                  </div>
+                </div>
+                <div class="recipe__view_header">
+                  <div class="timer__container">
+                    <i class="fa-regular fa-clock"></i>
+                    <span class="receipt__time"
+                      ><span class="receipt__timer_value">${recipe.cooking_time}</span>
+                      minutes</span
+                    >
+                  </div>
+                  <div class="servings__container">
+                    <i class="fa-solid fa-user-group"></i>
+                    <span class="receipt__servings"
+                      ><span class="receipt__servings_value">${recipe.servings}</span>
+                      servings</span
+                    >
+                  </div>
+                  <div class="modifying__servings_container">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    <i class="fa-solid fa-circle-minus"></i>
+                  </div>
+                  <div class="bookmark__icon_container">
+                    <div class="bookmark__icon_background">
+                      <i class="fa-regular fa-bookmark"></i>
+                      <!-- <i class="fa-solid fa-bookmark"></i> -->
+                    </div>
+                  </div>
+                </div>
+                <div class="recipe__view_body">
+                  <div class="recipe__body_title">
+                    <h2 class="recipe__ingredients_title">
+                      recipe ingredients
+                    </h2>
+                  </div>
+                  <ul class="receipt__items">
+                  ${recipe.ingredients.reduce((add, ingr)=>add + ` <li>${ingr.quantity ? new (0, _fractional.Fraction)(ingr.quantity).toString() : ""} ${ingr.unit} ${ingr.description}</li>`, "")}
+                  </ul>
+                </div>
+                <div class="recipe__view_footer">
+                  <div class="recipe__footer_container">
+                    <div class="recipe__footer_title">How to cook it</div>
+                    <div class="recipe__footer_subtitle">
+                    This recipe was carefully designed and tested by ${recipe.publisher}. Please check out directions at their website.
+                    </div>
+                    <div class="recipe__footer_btn_container">
+                      <div class="recipe__footer_btn">
+                      <a class="footer__btn_text" href="${recipe.source_url}">Directions</a>
+                        <span class="footer__btn_icon">&rarr;</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+    `;
+        return markup;
+    }
+    renderView(recipe) {
+        const markup = this.renderContent(recipe);
+        this._bodyContainer.insertAdjacentHTML("afterbegin", markup);
+    }
     addHandlerHashChange(handler) {
         window.addEventListener("hashchange", function(e) {
-            handler();
+            const id = location.hash.slice(1);
+            handler(id);
         });
     }
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["cI5Ua","MC2Vq"], "MC2Vq", "parcelRequire3a11")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","fractional":"3SU56"}],"3SU56":[function(require,module,exports) {
+/*
+fraction.js
+A Javascript fraction library.
+
+Copyright (c) 2009  Erik Garrison <erik@hypervolu.me>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+*/ /* Fractions */ /* 
+ *
+ * Fraction objects are comprised of a numerator and a denomenator.  These
+ * values can be accessed at fraction.numerator and fraction.denomenator.
+ *
+ * Fractions are always returned and stored in lowest-form normalized format.
+ * This is accomplished via Fraction.normalize.
+ *
+ * The following mathematical operations on fractions are supported:
+ *
+ * Fraction.equals
+ * Fraction.add
+ * Fraction.subtract
+ * Fraction.multiply
+ * Fraction.divide
+ *
+ * These operations accept both numbers and fraction objects.  (Best results
+ * are guaranteed when the input is a fraction object.)  They all return a new
+ * Fraction object.
+ *
+ * Usage:
+ *
+ * TODO
+ *
+ */ /*
+ * The Fraction constructor takes one of:
+ *   an explicit numerator (integer) and denominator (integer),
+ *   a string representation of the fraction (string),
+ *   or a floating-point number (float)
+ *
+ * These initialization methods are provided for convenience.  Because of
+ * rounding issues the best results will be given when the fraction is
+ * constructed from an explicit integer numerator and denomenator, and not a
+ * decimal number.
+ *
+ *
+ * e.g. new Fraction(1, 2) --> 1/2
+ *      new Fraction('1/2') --> 1/2
+ *      new Fraction('2 3/4') --> 11/4  (prints as 2 3/4)
+ *
+ */ Fraction = function(numerator, denominator) {
+    /* double argument invocation */ if (typeof numerator !== "undefined" && denominator) {
+        if (typeof numerator === "number" && typeof denominator === "number") {
+            this.numerator = numerator;
+            this.denominator = denominator;
+        } else if (typeof numerator === "string" && typeof denominator === "string") {
+            // what are they?
+            // hmm....
+            // assume they are ints?
+            this.numerator = parseInt(numerator);
+            this.denominator = parseInt(denominator);
+        }
+    /* single-argument invocation */ } else if (typeof denominator === "undefined") {
+        num = numerator; // swap variable names for legibility
+        if (typeof num === "number") {
+            this.numerator = num;
+            this.denominator = 1;
+        } else if (typeof num === "string") {
+            var a, b; // hold the first and second part of the fraction, e.g. a = '1' and b = '2/3' in 1 2/3
+            // or a = '2/3' and b = undefined if we are just passed a single-part number
+            var arr = num.split(" ");
+            if (arr[0]) a = arr[0];
+            if (arr[1]) b = arr[1];
+            /* compound fraction e.g. 'A B/C' */ //  if a is an integer ...
+            if (a % 1 === 0 && b && b.match("/")) return new Fraction(a).add(new Fraction(b));
+            else if (a && !b) {
+                /* simple fraction e.g. 'A/B' */ if (typeof a === "string" && a.match("/")) {
+                    // it's not a whole number... it's actually a fraction without a whole part written
+                    var f = a.split("/");
+                    this.numerator = f[0];
+                    this.denominator = f[1];
+                /* string floating point */ } else if (typeof a === "string" && a.match(".")) return new Fraction(parseFloat(a));
+                else {
+                    this.numerator = parseInt(a);
+                    this.denominator = 1;
+                }
+            } else return undefined; // could not parse
+        }
+    }
+    this.normalize();
+};
+Fraction.prototype.clone = function() {
+    return new Fraction(this.numerator, this.denominator);
+};
+/* pretty-printer, converts fractions into whole numbers and fractions */ Fraction.prototype.toString = function() {
+    if (this.denominator === "NaN") return "NaN";
+    var wholepart = this.numerator / this.denominator > 0 ? Math.floor(this.numerator / this.denominator) : Math.ceil(this.numerator / this.denominator);
+    var numerator = this.numerator % this.denominator;
+    var denominator = this.denominator;
+    var result = [];
+    if (wholepart != 0) result.push(wholepart);
+    if (numerator != 0) result.push((wholepart === 0 ? numerator : Math.abs(numerator)) + "/" + denominator);
+    return result.length > 0 ? result.join(" ") : 0;
+};
+/* destructively rescale the fraction by some integral factor */ Fraction.prototype.rescale = function(factor) {
+    this.numerator *= factor;
+    this.denominator *= factor;
+    return this;
+};
+Fraction.prototype.add = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) b = b.clone();
+    else b = new Fraction(b);
+    td = a.denominator;
+    a.rescale(b.denominator);
+    b.rescale(td);
+    a.numerator += b.numerator;
+    return a.normalize();
+};
+Fraction.prototype.subtract = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) b = b.clone(); // we scale our argument destructively, so clone
+    else b = new Fraction(b);
+    td = a.denominator;
+    a.rescale(b.denominator);
+    b.rescale(td);
+    a.numerator -= b.numerator;
+    return a.normalize();
+};
+Fraction.prototype.multiply = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) {
+        a.numerator *= b.numerator;
+        a.denominator *= b.denominator;
+    } else if (typeof b === "number") a.numerator *= b;
+    else return a.multiply(new Fraction(b));
+    return a.normalize();
+};
+Fraction.prototype.divide = function(b) {
+    var a = this.clone();
+    if (b instanceof Fraction) {
+        a.numerator *= b.denominator;
+        a.denominator *= b.numerator;
+    } else if (typeof b === "number") a.denominator *= b;
+    else return a.divide(new Fraction(b));
+    return a.normalize();
+};
+Fraction.prototype.equals = function(b) {
+    if (!(b instanceof Fraction)) b = new Fraction(b);
+    // fractions that are equal should have equal normalized forms
+    var a = this.clone().normalize();
+    var b = b.clone().normalize();
+    return a.numerator === b.numerator && a.denominator === b.denominator;
+};
+/* Utility functions */ /* Destructively normalize the fraction to its smallest representation. 
+ * e.g. 4/16 -> 1/4, 14/28 -> 1/2, etc.
+ * This is called after all math ops.
+ */ Fraction.prototype.normalize = function() {
+    var isFloat = function(n) {
+        return typeof n === "number" && (n > 0 && n % 1 > 0 && n % 1 < 1 || n < 0 && n % -1 < 0 && n % -1 > -1);
+    };
+    var roundToPlaces = function(n, places) {
+        if (!places) return Math.round(n);
+        else {
+            var scalar = Math.pow(10, places);
+            return Math.round(n * scalar) / scalar;
+        }
+    };
+    return function() {
+        // XXX hackish.  Is there a better way to address this issue?
+        //
+        /* first check if we have decimals, and if we do eliminate them
+         * multiply by the 10 ^ number of decimal places in the number
+         * round the number to nine decimal places
+         * to avoid js floating point funnies
+         */ if (isFloat(this.denominator)) {
+            var rounded = roundToPlaces(this.denominator, 9);
+            var scaleup = Math.pow(10, rounded.toString().split(".")[1].length);
+            this.denominator = Math.round(this.denominator * scaleup); // this !!! should be a whole number
+            //this.numerator *= scaleup;
+            this.numerator *= scaleup;
+        }
+        if (isFloat(this.numerator)) {
+            var rounded = roundToPlaces(this.numerator, 9);
+            var scaleup = Math.pow(10, rounded.toString().split(".")[1].length);
+            this.numerator = Math.round(this.numerator * scaleup); // this !!! should be a whole number
+            //this.numerator *= scaleup;
+            this.denominator *= scaleup;
+        }
+        var gcf = Fraction.gcf(this.numerator, this.denominator);
+        this.numerator /= gcf;
+        this.denominator /= gcf;
+        if (this.numerator < 0 && this.denominator < 0 || this.numerator > 0 && this.denominator < 0) {
+            this.numerator *= -1;
+            this.denominator *= -1;
+        }
+        return this;
+    };
+}();
+/* Takes two numbers and returns their greatest common factor.
+ */ Fraction.gcf = function(a, b) {
+    var common_factors = [];
+    var fa = Fraction.primeFactors(a);
+    var fb = Fraction.primeFactors(b);
+    // for each factor in fa
+    // if it's also in fb
+    // put it into the common factors
+    fa.forEach(function(factor) {
+        var i = fb.indexOf(factor);
+        if (i >= 0) {
+            common_factors.push(factor);
+            fb.splice(i, 1); // remove from fb
+        }
+    });
+    if (common_factors.length === 0) return 1;
+    var gcf = function() {
+        var r = common_factors[0];
+        var i;
+        for(i = 1; i < common_factors.length; i++)r = r * common_factors[i];
+        return r;
+    }();
+    return gcf;
+};
+// Adapted from: 
+// http://www.btinternet.com/~se16/js/factor.htm
+Fraction.primeFactors = function(n) {
+    var num1 = Math.abs(n);
+    var factors = [];
+    var _factor = 2; // first potential prime factor
+    while(_factor * _factor <= num1)if (num1 % _factor === 0) {
+        factors.push(_factor); // so keep it
+        num1 = num1 / _factor; // and divide our search point by it
+    } else _factor++; // and increment
+    if (num1 != 1) factors.push(num1); //    so it too should be recorded
+    return factors; // Return the prime factors
+};
+module.exports.Fraction = Fraction;
+
+},{}]},["cI5Ua","MC2Vq"], "MC2Vq", "parcelRequire3a11")
 
 //# sourceMappingURL=index.3e7ad75e.js.map

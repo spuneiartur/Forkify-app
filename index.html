@@ -61,7 +61,9 @@
           <section class="main__section">
             <div class="recipe__list_container">
               <div class="recipe__list_flex">
-                <div class="loading__animation hidden">
+                <div
+                  class="loading__animation_search-results loading__animation hidden"
+                >
                   <div class="spinner"></div>
                 </div>
                 <div class="recipe__preview_container"></div>
@@ -106,73 +108,12 @@
                   >
                 </div>
               </div> -->
-              <div class="main__recipe_view_container">
-                <div class="recipe__view_img_container _ibg">
-                  <img src="./src/img/food_image.jpg" alt="recipe_image" />
-                  <div class="recipe__title_container">
-                    <span class="recipe__title"
-                      >CAULIFLOWER PIZZA CRUST (WITH BBQ CHICKEN PIZZA)</span
-                    >
-                  </div>
-                </div>
-                <div class="recipe__view_header">
-                  <div class="timer__container">
-                    <i class="fa-regular fa-clock"></i>
-                    <span class="receipt__time"
-                      ><span class="receipt__timer_value">75</span>
-                      minutes</span
-                    >
-                  </div>
-                  <div class="servings__container">
-                    <i class="fa-solid fa-user-group"></i>
-                    <span class="receipt__servings"
-                      ><span class="receipt__servings_value">4</span>
-                      servings</span
-                    >
-                  </div>
-                  <div class="modifying__servings_container">
-                    <i class="fa-solid fa-circle-plus"></i>
-                    <i class="fa-solid fa-circle-minus"></i>
-                  </div>
-                  <div class="bookmark__icon_container">
-                    <div class="bookmark__icon_background">
-                      <i class="fa-regular fa-bookmark"></i>
-                      <!-- <i class="fa-solid fa-bookmark"></i> -->
-                    </div>
-                  </div>
-                </div>
-                <div class="recipe__view_body">
-                  <div class="recipe__body_title">
-                    <h2 class="recipe__ingredients_title">
-                      recipe ingredients
-                    </h2>
-                  </div>
-                  <ul class="receipt__items">
-                    <li>1 medium head cauliflower cut into florets</li>
-                    <li>0.5 cup mozzarella shredded</li>
-                    <li>Salt and pepper to taste</li>
-                    <li>1 medium head cauliflower cut into florets</li>
-                    <li>0.5 cup mozzarella shredded</li>
-                    <li>Salt and pepper to taste</li>
-                  </ul>
-                </div>
-                <div class="recipe__view_footer">
-                  <div class="recipe__footer_container">
-                    <div class="recipe__footer_title">How to cook it</div>
-                    <div class="recipe__footer_subtitle">
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                      Animi suscipit ratione est. Lorem ipsum dolor sit, amet
-                      consectetur adipisicing elit. Animi suscipit ratione est.
-                    </div>
-                    <div class="recipe__footer_btn_container">
-                      <div class="recipe__footer_btn">
-                        <span class="footer__btn_text">Directions</span>
-                        <span class="footer__btn_icon">&rarr;</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div
+                class="loading__animation_recipe-view loading__animation hidden"
+              >
+                <div class="spinner"></div>
               </div>
+              <div class="main__recipe_view_container"></div>
             </div>
           </section>
           <section class="footer__section"></section>

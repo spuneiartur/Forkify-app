@@ -596,7 +596,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .recipe__view_body {
   background-color: #f2efee;
-  padding: 5rem 0 0;
+  padding: 5rem 0;
 }
 
 .recipe__body_title {
@@ -701,8 +701,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .footer__btn_text {
+  color: var(--beige-light);
   text-transform: uppercase;
   font-size: 1.5rem;
+}
+
+.footer__btn_icon {
+  margin: 0 0 0 .5rem;
+  font-size: 1.8rem;
 }
 
 /*# sourceMappingURL=index.ee7f3cbd.css.map */

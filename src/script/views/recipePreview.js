@@ -4,15 +4,24 @@ class RecipePreview {
   _buttons = document.querySelectorAll('.pagination__btn');
   _recipesListContainer = document.querySelector('.recipe__preview_container');
   _recipeElement = document.querySelector('.recipe__list_element');
+  _spinnerContainer = document.querySelector(
+    '.loading__animation_search-results'
+  );
 
-  constructor() {}
+  startAnimation() {
+    this._spinnerContainer.classList.remove('hidden');
+  }
+
+  endAnimation() {
+    this._spinnerContainer.classList.add('hidden');
+  }
 
   renderContent(recipes) {
     let markup = '';
     recipes.forEach(
       recipe =>
         (markup += `
-    <div class="recipe__list_element" data-id="${recipe.recipe_id}">
+    <div class="recipe__list_element" data-id="${recipe.id}">
       <div class="preview__img_container _ibg">
         <img
           src="${recipe.image_url}"
@@ -28,7 +37,7 @@ class RecipePreview {
 
     return markup;
   }
-  clearList() {
+  clearHTML() {
     this._recipesListContainer.innerHTML = '';
   }
   renderView(state) {
@@ -86,10 +95,9 @@ class RecipePreview {
 
   addHandlerPreviewClick() {
     this._recipesListContainer.addEventListener('click', function (e) {
-      console.log('I was called!');
       if (!e.target.closest('.recipe__list_element')) return;
       const element = e.target.closest('.recipe__list_element');
-      window.history.pushState(null, '', `#${element.dataset.id}`);
+      window.location.hash = element.dataset.id;
     });
   }
 }
