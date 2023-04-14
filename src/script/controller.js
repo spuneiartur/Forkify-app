@@ -27,6 +27,10 @@ function App() {
 
   async function controlHashChange(id) {
     try {
+      if (location.hash == '') {
+        return;
+      }
+      recipeView.hideMessage();
       recipeView.clearHTML();
       recipeView.startAnimation();
       recipeView.renderView(await module.loadRecipe(id));
@@ -37,11 +41,24 @@ function App() {
     }
   }
 
+  function controlChangeServings(ok) {
+    if (ok === true) {
+      module.activeRecipe.currentServings++;
+    } else if (ok === false && module.activeRecipe.currentServings > 1) {
+      module.activeRecipe.currentServings--;
+    } else {
+      return;
+    }
+    recipeView.clearHTML();
+    recipeView.renderView(module.activeRecipe);
+  }
+
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);
     recipePreview.addHandlerPagination(controlPagination);
     recipePreview.addHandlerPreviewClick();
     recipeView.addHandlerHashChange(controlHashChange);
+    recipeView.addHandlerChangeServings(controlChangeServings);
   }
   addingHandlers();
 }

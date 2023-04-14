@@ -426,10 +426,6 @@ h1, h2, h3, h4, h5, h6 {
   right: 0;
 }
 
-.hidden {
-  display: none;
-}
-
 .pagination__arrow {
   margin: 0 .3rem;
   font-size: 2rem;
@@ -459,10 +455,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .main__message_container {
-  width: 60%;
+  max-width: 35rem;
+  justify-content: center;
+  align-items: center;
   margin: 5rem auto;
   font-size: 1.6rem;
   display: flex;
+}
+
+.hidden {
+  display: none;
 }
 
 .main__message_container span {

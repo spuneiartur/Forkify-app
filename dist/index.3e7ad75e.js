@@ -588,6 +588,8 @@ function App() {
     }
     async function controlHashChange(id) {
         try {
+            if (location.hash == "") return;
+            (0, _recipeViewJsDefault.default).hideMessage();
             (0, _recipeViewJsDefault.default).clearHTML();
             (0, _recipeViewJsDefault.default).startAnimation();
             (0, _recipeViewJsDefault.default).renderView(await (0, _moduleJsDefault.default).loadRecipe(id));
@@ -597,17 +599,25 @@ function App() {
             (0, _recipeViewJsDefault.default).endAnimation();
         }
     }
+    function controlChangeServings(ok) {
+        if (ok === true) (0, _moduleJsDefault.default).activeRecipe.currentServings++;
+        else if (ok === false && (0, _moduleJsDefault.default).activeRecipe.currentServings > 1) (0, _moduleJsDefault.default).activeRecipe.currentServings--;
+        else return;
+        (0, _recipeViewJsDefault.default).clearHTML();
+        (0, _recipeViewJsDefault.default).renderView((0, _moduleJsDefault.default).activeRecipe);
+    }
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
         (0, _recipePreviewJsDefault.default).addHandlerPagination(controlPagination);
         (0, _recipePreviewJsDefault.default).addHandlerPreviewClick();
         (0, _recipeViewJsDefault.default).addHandlerHashChange(controlHashChange);
+        (0, _recipeViewJsDefault.default).addHandlerChangeServings(controlChangeServings);
     }
     addingHandlers();
 }
 App();
 
-},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipeView.js":"hgTkH"}],"bYnrN":[function(require,module,exports) {
+},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","./views/recipeView.js":"hgTkH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bYnrN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
@@ -682,6 +692,7 @@ class Module {
             const { data  } = await result.json();
             const { recipe  } = data;
             this.activeRecipe = recipe;
+            this.activeRecipe.currentServings = this.activeRecipe.servings;
             return recipe;
         } catch (err) {
             throw err;
@@ -702,7 +713,7 @@ class Module {
 }
 exports.default = new Module();
 
-},{"./env":"ieYb1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipePreview":"6mrXi"}],"ieYb1":[function(require,module,exports) {
+},{"./env":"ieYb1","./views/recipePreview":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ieYb1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "RESULT_PER_PAGE", ()=>RESULT_PER_PAGE);
@@ -791,11 +802,18 @@ var _fractional = require("fractional");
 class RecipeView {
     _bodyContainer = document.querySelector(".main__recipe_view_container");
     _spinnerContainer = document.querySelector(".loading__animation_recipe-view");
+    _servingsContainer = document.querySelector(".modifying__servings_container");
+    _servingsPlusBtn = document.querySelector(".fa-circle-plus");
+    _servingsMinusBtn = document.querySelector(".fa-circle-minus");
+    _messageContainer = document.querySelector(".main__message_container");
     startAnimation() {
         this._spinnerContainer.classList.remove("hidden");
     }
     endAnimation() {
         this._spinnerContainer.classList.add("hidden");
+    }
+    hideMessage() {
+        this._messageContainer.classList.add("hidden");
     }
     clearHTML() {
         this._bodyContainer.innerHTML = "";
@@ -821,7 +839,7 @@ class RecipeView {
                   <div class="servings__container">
                     <i class="fa-solid fa-user-group"></i>
                     <span class="receipt__servings"
-                      ><span class="receipt__servings_value">${recipe.servings}</span>
+                      ><span class="receipt__servings_value">${recipe.currentServings}</span>
                       servings</span
                     >
                   </div>
@@ -843,7 +861,7 @@ class RecipeView {
                     </h2>
                   </div>
                   <ul class="receipt__items">
-                  ${recipe.ingredients.reduce((add, ingr)=>add + ` <li>${ingr.quantity ? new (0, _fractional.Fraction)(ingr.quantity).toString() : ""} ${ingr.unit} ${ingr.description}</li>`, "")}
+                  ${recipe.ingredients.reduce((add, ingr)=>add + ` <li>${ingr.quantity ? new (0, _fractional.Fraction)(ingr.quantity * (Math.round(recipe.currentServings / recipe.servings * 10) / 10)).toString() : ""} ${ingr.unit} ${ingr.description}</li>`, "")}
                   </ul>
                 </div>
                 <div class="recipe__view_footer">
@@ -873,10 +891,19 @@ class RecipeView {
             handler(id);
         });
     }
+    addHandlerChangeServings(handler) {
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".fa-circle-plus") && !e.target.closest(".fa-circle-minus")) return;
+            let ok;
+            if (e.target.closest(".fa-circle-plus")) ok = true;
+            if (e.target.closest(".fa-circle-minus")) ok = false;
+            handler(ok);
+        });
+    }
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","fractional":"3SU56"}],"3SU56":[function(require,module,exports) {
+},{"fractional":"3SU56","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3SU56":[function(require,module,exports) {
 /*
 fraction.js
 A Javascript fraction library.

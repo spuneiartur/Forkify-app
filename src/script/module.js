@@ -27,6 +27,7 @@ class Module {
       const { data } = await result.json();
       const { recipe } = data;
       this.activeRecipe = recipe;
+      this.activeRecipe.currentServings = this.activeRecipe.servings;
 
       return recipe;
     } catch (err) {
