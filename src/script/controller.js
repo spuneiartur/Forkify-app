@@ -30,6 +30,7 @@ function App() {
       if (location.hash == '') {
         return;
       }
+      recipeView.hideMessage();
       recipeView.clearHTML();
       recipeView.startAnimation();
       recipeView.renderView(await module.loadRecipe(id));

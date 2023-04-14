@@ -589,6 +589,7 @@ function App() {
     async function controlHashChange(id) {
         try {
             if (location.hash == "") return;
+            (0, _recipeViewJsDefault.default).hideMessage();
             (0, _recipeViewJsDefault.default).clearHTML();
             (0, _recipeViewJsDefault.default).startAnimation();
             (0, _recipeViewJsDefault.default).renderView(await (0, _moduleJsDefault.default).loadRecipe(id));
@@ -804,11 +805,15 @@ class RecipeView {
     _servingsContainer = document.querySelector(".modifying__servings_container");
     _servingsPlusBtn = document.querySelector(".fa-circle-plus");
     _servingsMinusBtn = document.querySelector(".fa-circle-minus");
+    _messageContainer = document.querySelector(".main__message_container");
     startAnimation() {
         this._spinnerContainer.classList.remove("hidden");
     }
     endAnimation() {
         this._spinnerContainer.classList.add("hidden");
+    }
+    hideMessage() {
+        this._messageContainer.classList.add("hidden");
     }
     clearHTML() {
         this._bodyContainer.innerHTML = "";
