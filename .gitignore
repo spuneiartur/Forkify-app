@@ -1,2 +1,4 @@
 dist/
 .parcel-cache/
+.parcel-cache/data.mdb
+dist/index.3e7ad75e.js
