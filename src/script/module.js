@@ -5,9 +5,27 @@ class Module {
   activeRecipe;
   state = {
     recipes: [],
+    bookmarkedRecipes: [],
     currentPage: 1,
     resultsPerPage: RESULT_PER_PAGE,
   };
+
+  bookmarkRecipe() {
+    this.state.bookmarkedRecipes.push(this.activeRecipe);
+  }
+
+  unbookmarkRecipe() {
+    const index = this.state.bookmarkRecipe.indexOf(this.activeRecipe);
+    this.state.bookmarkedRecipes = this.state.bookmarkedRecipes.splice(
+      index,
+      1
+    );
+  }
+
+  checkRecipeBookmarked(recipe = this.activeRecipe) {
+    if (this.state.bookmarkedRecipes.includes(this.activeRecipe)) return true;
+    if (!this.state.bookmarkedRecipes.includes(this.activeRecipe)) return false;
+  }
 
   loadPageResults(goToPage) {
     const maxPage = Math.ceil(
@@ -28,6 +46,11 @@ class Module {
       const { recipe } = data;
       this.activeRecipe = recipe;
       this.activeRecipe.currentServings = this.activeRecipe.servings;
+      if (this.checkRecipeBookmarked()) {
+        this.activeRecipe.bookmarked = true;
+      } else {
+        this.activeRecipe.bookmarked = false;
+      }
 
       return recipe;
     } catch (err) {

@@ -2,6 +2,7 @@ import searchView from './views/searchView.js';
 import module from './module.js';
 import recipePreview from './views/recipePreview.js';
 import recipeView from './views/recipeView.js';
+import bookmarkView from './views/bookmarkView.js';
 function App() {
   location.hash = '';
 
@@ -53,12 +54,32 @@ function App() {
     recipeView.renderView(module.activeRecipe);
   }
 
+  function controlBookMarkClicked() {
+    if (module.checkRecipeBookmarked) {
+      module.unbookmarkRecipe();
+    } else {
+      module.bookmarkRecipe();
+    }
+  }
+  /**
+   *
+   * @returns boolean true if recipe is bookmarked, false if recipe is not bookmarked yet
+   */
+  function checkBookMark() {
+    if (module.checkRecipeBookmarked) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);
     recipePreview.addHandlerPagination(controlPagination);
     recipePreview.addHandlerPreviewClick();
     recipeView.addHandlerHashChange(controlHashChange);
     recipeView.addHandlerChangeServings(controlChangeServings);
+    bookmarkView.addHandlerClickIcon(controlBookMarkClicked);
   }
   addingHandlers();
 }

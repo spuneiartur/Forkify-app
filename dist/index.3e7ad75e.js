@@ -566,6 +566,8 @@ var _recipePreviewJs = require("./views/recipePreview.js");
 var _recipePreviewJsDefault = parcelHelpers.interopDefault(_recipePreviewJs);
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
+var _bookmarkViewJs = require("./views/bookmarkView.js");
+var _bookmarkViewJsDefault = parcelHelpers.interopDefault(_bookmarkViewJs);
 function App() {
     location.hash = "";
     async function controlSearch() {
@@ -606,18 +608,30 @@ function App() {
         (0, _recipeViewJsDefault.default).clearHTML();
         (0, _recipeViewJsDefault.default).renderView((0, _moduleJsDefault.default).activeRecipe);
     }
+    function controlBookMarkClicked() {
+        if ((0, _moduleJsDefault.default).checkRecipeBookmarked) (0, _moduleJsDefault.default).unbookmarkRecipe();
+        else (0, _moduleJsDefault.default).bookmarkRecipe();
+    }
+    /**
+   *
+   * @returns boolean true if recipe is bookmarked, false if recipe is not bookmarked yet
+   */ function checkBookMark() {
+        if ((0, _moduleJsDefault.default).checkRecipeBookmarked) return true;
+        else return false;
+    }
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
         (0, _recipePreviewJsDefault.default).addHandlerPagination(controlPagination);
         (0, _recipePreviewJsDefault.default).addHandlerPreviewClick();
         (0, _recipeViewJsDefault.default).addHandlerHashChange(controlHashChange);
         (0, _recipeViewJsDefault.default).addHandlerChangeServings(controlChangeServings);
+        (0, _bookmarkViewJsDefault.default).addHandlerClickIcon(controlBookMarkClicked);
     }
     addingHandlers();
 }
 App();
 
-},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","./views/recipeView.js":"hgTkH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bYnrN":[function(require,module,exports) {
+},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","./views/recipeView.js":"hgTkH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/bookmarkView.js":"RdFqk"}],"bYnrN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
@@ -678,9 +692,21 @@ class Module {
     activeRecipe;
     state = {
         recipes: [],
+        bookmarkedRecipes: [],
         currentPage: 1,
         resultsPerPage: (0, _env.RESULT_PER_PAGE)
     };
+    bookmarkRecipe() {
+        this.state.bookmarkedRecipes.push(this.activeRecipe);
+    }
+    unbookmarkRecipe() {
+        const index = this.state.bookmarkRecipe.indexOf(this.activeRecipe);
+        this.state.bookmarkedRecipes = this.state.bookmarkedRecipes.splice(index, 1);
+    }
+    checkRecipeBookmarked(recipe = this.activeRecipe) {
+        if (this.state.bookmarkedRecipes.includes(this.activeRecipe)) return true;
+        if (!this.state.bookmarkedRecipes.includes(this.activeRecipe)) return false;
+    }
     loadPageResults(goToPage) {
         const maxPage = Math.ceil(this.state.recipes.length / this.state.resultsPerPage);
         if (goToPage >= 1 && goToPage <= maxPage) this.state.currentPage = goToPage;
@@ -693,6 +719,8 @@ class Module {
             const { recipe  } = data;
             this.activeRecipe = recipe;
             this.activeRecipe.currentServings = this.activeRecipe.servings;
+            if (this.checkRecipeBookmarked()) this.activeRecipe.bookmarked = true;
+            else this.activeRecipe.bookmarked = false;
             return recipe;
         } catch (err) {
             throw err;
@@ -1156,6 +1184,19 @@ Fraction.primeFactors = function(n) {
 };
 module.exports.Fraction = Fraction;
 
-},{}]},["cI5Ua","MC2Vq"], "MC2Vq", "parcelRequire3a11")
+},{}],"RdFqk":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+class BookMark {
+    addHandlerClickIcon(handler) {
+        document.addEventListener("click", function(e) {
+            if (!e.target.closest(".bookmark__icon_background")) return;
+            console.log("Clicked!");
+        });
+    }
+}
+exports.default = new BookMark();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["cI5Ua","MC2Vq"], "MC2Vq", "parcelRequire3a11")
 
 //# sourceMappingURL=index.3e7ad75e.js.map
