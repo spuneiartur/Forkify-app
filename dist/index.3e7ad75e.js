@@ -607,7 +607,7 @@ function App() {
 }
 App();
 
-},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipeView.js":"hgTkH"}],"bYnrN":[function(require,module,exports) {
+},{"./views/searchView.js":"bYnrN","./module.js":"cSZqD","./views/recipePreview.js":"6mrXi","./views/recipeView.js":"hgTkH","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bYnrN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class SearchView {
@@ -702,7 +702,7 @@ class Module {
 }
 exports.default = new Module();
 
-},{"./env":"ieYb1","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/recipePreview":"6mrXi"}],"ieYb1":[function(require,module,exports) {
+},{"./env":"ieYb1","./views/recipePreview":"6mrXi","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"ieYb1":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "RESULT_PER_PAGE", ()=>RESULT_PER_PAGE);
@@ -876,7 +876,7 @@ class RecipeView {
 }
 exports.default = new RecipeView();
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","fractional":"3SU56"}],"3SU56":[function(require,module,exports) {
+},{"fractional":"3SU56","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3SU56":[function(require,module,exports) {
 /*
 fraction.js
 A Javascript fraction library.
