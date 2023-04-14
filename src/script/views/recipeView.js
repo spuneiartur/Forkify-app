@@ -2,12 +2,20 @@ import { Fraction } from 'fractional';
 class RecipeView {
   _bodyContainer = document.querySelector('.main__recipe_view_container');
   _spinnerContainer = document.querySelector('.loading__animation_recipe-view');
+  _servingsContainer = document.querySelector('.modifying__servings_container');
+  _servingsPlusBtn = document.querySelector('.fa-circle-plus');
+  _servingsMinusBtn = document.querySelector('.fa-circle-minus');
+  _messageContainer = document.querySelector('.main__message_container');
   startAnimation() {
     this._spinnerContainer.classList.remove('hidden');
   }
 
   endAnimation() {
     this._spinnerContainer.classList.add('hidden');
+  }
+
+  hideMessage() {
+    this._messageContainer.classList.add('hidden');
   }
   clearHTML() {
     this._bodyContainer.innerHTML = '';
@@ -36,7 +44,7 @@ class RecipeView {
                     <i class="fa-solid fa-user-group"></i>
                     <span class="receipt__servings"
                       ><span class="receipt__servings_value">${
-                        recipe.servings
+                        recipe.currentServings
                       }</span>
                       servings</span
                     >
@@ -64,7 +72,14 @@ class RecipeView {
                       add +
                       ` <li>${
                         ingr.quantity
-                          ? new Fraction(ingr.quantity).toString()
+                          ? new Fraction(
+                              ingr.quantity *
+                                (Math.round(
+                                  (recipe.currentServings / recipe.servings) *
+                                    10
+                                ) /
+                                  10)
+                            ).toString()
                           : ''
                       } ${ingr.unit} ${ingr.description}</li>`,
                     ''
@@ -104,6 +119,26 @@ class RecipeView {
     window.addEventListener('hashchange', function (e) {
       const id = location.hash.slice(1);
       handler(id);
+    });
+  }
+
+  addHandlerChangeServings(handler) {
+    document.addEventListener('click', function (e) {
+      if (
+        !e.target.closest('.fa-circle-plus') &&
+        !e.target.closest('.fa-circle-minus')
+      ) {
+        return;
+      }
+      let ok;
+      if (e.target.closest('.fa-circle-plus')) {
+        ok = true;
+      }
+      if (e.target.closest('.fa-circle-minus')) {
+        ok = false;
+      }
+
+      handler(ok);
     });
   }
 }

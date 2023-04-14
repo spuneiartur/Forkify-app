@@ -163,6 +163,7 @@ h6 {
 }
 
 
+
 /* span {
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
@@ -540,9 +541,7 @@ h6 {
 
 }
 
-.hidden {
-    display: none;
-}
+
 
 .pagination__btn_text {}
 
@@ -582,9 +581,16 @@ h6 {
 
 .main__message_container {
     display: flex;
+    align-items: center;
+    justify-content: center;
     margin: 5rem auto;
     font-size: 1.6rem;
-    width: 60%;
+    max-width: 35rem;
+
+}
+
+.hidden {
+    display: none;
 }
 
 .main__message_container span {
