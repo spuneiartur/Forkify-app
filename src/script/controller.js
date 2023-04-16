@@ -5,7 +5,8 @@ import recipeView from './views/recipeView.js';
 import bookmarkView from './views/bookmarkView.js';
 function App() {
   location.hash = '';
-
+  module.readLocalStorage();
+  // module.clearLocalStorage();
   async function controlSearch() {
     try {
       const query = searchView.getQuery();
@@ -55,23 +56,16 @@ function App() {
   }
 
   function controlBookMarkClicked() {
-    if (module.checkRecipeBookmarked) {
+    if (module.checkRecipeBookmarked()) {
       module.unbookmarkRecipe();
     } else {
       module.bookmarkRecipe();
     }
+    recipeView.clearHTML();
+    recipeView.renderView(module.activeRecipe);
   }
-  /**
-   *
-   * @returns boolean true if recipe is bookmarked, false if recipe is not bookmarked yet
-   */
-  function checkBookMark() {
-    if (module.checkRecipeBookmarked) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // 1) change icon depending if recipe is bookmarked or not
+  // 2) save bookamrkedRecipes in local storage and init it every time the app starts
 
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);
@@ -79,7 +73,7 @@ function App() {
     recipePreview.addHandlerPreviewClick();
     recipeView.addHandlerHashChange(controlHashChange);
     recipeView.addHandlerChangeServings(controlChangeServings);
-    bookmarkView.addHandlerClickIcon(controlBookMarkClicked);
+    bookmarkView.addHandlerClickBookmark(controlBookMarkClicked);
   }
   addingHandlers();
 }

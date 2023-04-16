@@ -55,8 +55,11 @@ class RecipeView {
                   </div>
                   <div class="bookmark__icon_container">
                     <div class="bookmark__icon_background">
-                      <i class="fa-regular fa-bookmark"></i>
-                      <!-- <i class="fa-solid fa-bookmark"></i> -->
+                    ${
+                      recipe.bookmarked
+                        ? '<i class="fa-solid fa-bookmark"></i>'
+                        : ' <i class="fa-regular fa-bookmark"></i>'
+                    }
                     </div>
                   </div>
                 </div>

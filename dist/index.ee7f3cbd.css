@@ -212,6 +212,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav__bookmarks {
+  cursor: pointer;
   margin: 0 1rem;
 }
 
@@ -561,6 +562,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fa-circle-plus {
+  cursor: pointer;
   transition: all .2s;
 }
 
@@ -569,6 +571,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fa-circle-minus {
+  cursor: pointer;
   transition: all .2s;
 }
 
@@ -582,6 +585,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .bookmark__icon_background {
   background-image: linear-gradient(to right bottom, var(--color-grad-1), var(--color-grad-2));
+  cursor: pointer;
   border-radius: 50%;
   padding: 1.3rem 1rem;
   transition: all .3s;

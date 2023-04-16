@@ -570,6 +570,8 @@ var _bookmarkViewJs = require("./views/bookmarkView.js");
 var _bookmarkViewJsDefault = parcelHelpers.interopDefault(_bookmarkViewJs);
 function App() {
     location.hash = "";
+    (0, _moduleJsDefault.default).readLocalStorage();
+    // module.clearLocalStorage();
     async function controlSearch() {
         try {
             const query = (0, _searchViewJsDefault.default).getQuery();
@@ -609,23 +611,20 @@ function App() {
         (0, _recipeViewJsDefault.default).renderView((0, _moduleJsDefault.default).activeRecipe);
     }
     function controlBookMarkClicked() {
-        if ((0, _moduleJsDefault.default).checkRecipeBookmarked) (0, _moduleJsDefault.default).unbookmarkRecipe();
+        if ((0, _moduleJsDefault.default).checkRecipeBookmarked()) (0, _moduleJsDefault.default).unbookmarkRecipe();
         else (0, _moduleJsDefault.default).bookmarkRecipe();
+        (0, _recipeViewJsDefault.default).clearHTML();
+        (0, _recipeViewJsDefault.default).renderView((0, _moduleJsDefault.default).activeRecipe);
     }
-    /**
-   *
-   * @returns boolean true if recipe is bookmarked, false if recipe is not bookmarked yet
-   */ function checkBookMark() {
-        if ((0, _moduleJsDefault.default).checkRecipeBookmarked) return true;
-        else return false;
-    }
+    // 1) change icon depending if recipe is bookmarked or not
+    // 2) save bookamrkedRecipes in local storage and init it every time the app starts
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
         (0, _recipePreviewJsDefault.default).addHandlerPagination(controlPagination);
         (0, _recipePreviewJsDefault.default).addHandlerPreviewClick();
         (0, _recipeViewJsDefault.default).addHandlerHashChange(controlHashChange);
         (0, _recipeViewJsDefault.default).addHandlerChangeServings(controlChangeServings);
-        (0, _bookmarkViewJsDefault.default).addHandlerClickIcon(controlBookMarkClicked);
+        (0, _bookmarkViewJsDefault.default).addHandlerClickBookmark(controlBookMarkClicked);
     }
     addingHandlers();
 }
@@ -696,16 +695,32 @@ class Module {
         currentPage: 1,
         resultsPerPage: (0, _env.RESULT_PER_PAGE)
     };
+    readLocalStorage() {
+        const storage = localStorage.getItem("bookmarks");
+        if (storage) this.state.bookmarkedRecipes = JSON.parse(storage);
+    }
+    writeLocalStorage() {
+        this.clearLocalStorage();
+        localStorage.setItem("bookmarks", JSON.stringify(this.state.bookmarkedRecipes));
+    }
+    clearLocalStorage() {
+        localStorage.clear("bookmarks");
+    }
     bookmarkRecipe() {
-        this.state.bookmarkedRecipes.push(this.activeRecipe);
+        console.log(this.state.bookmarkedRecipes);
+        this.state.bookmarkedRecipes.push(this.activeRecipe.id);
+        this.activeRecipe.bookmarked = true;
+        this.writeLocalStorage();
     }
     unbookmarkRecipe() {
-        const index = this.state.bookmarkRecipe.indexOf(this.activeRecipe);
-        this.state.bookmarkedRecipes = this.state.bookmarkedRecipes.splice(index, 1);
+        const index = this.state.bookmarkedRecipes.indexOf(this.activeRecipe.id);
+        this.state.bookmarkedRecipes.splice(index, 1);
+        this.activeRecipe.bookmarked = false;
+        this.writeLocalStorage();
     }
     checkRecipeBookmarked(recipe = this.activeRecipe) {
-        if (this.state.bookmarkedRecipes.includes(this.activeRecipe)) return true;
-        if (!this.state.bookmarkedRecipes.includes(this.activeRecipe)) return false;
+        if (this.state.bookmarkedRecipes.includes(this.activeRecipe.id)) return true;
+        if (!this.state.bookmarkedRecipes.includes(this.activeRecipe.id)) return false;
     }
     loadPageResults(goToPage) {
         const maxPage = Math.ceil(this.state.recipes.length / this.state.resultsPerPage);
@@ -721,7 +736,7 @@ class Module {
             this.activeRecipe.currentServings = this.activeRecipe.servings;
             if (this.checkRecipeBookmarked()) this.activeRecipe.bookmarked = true;
             else this.activeRecipe.bookmarked = false;
-            return recipe;
+            return this.activeRecipe;
         } catch (err) {
             throw err;
         }
@@ -877,8 +892,7 @@ class RecipeView {
                   </div>
                   <div class="bookmark__icon_container">
                     <div class="bookmark__icon_background">
-                      <i class="fa-regular fa-bookmark"></i>
-                      <!-- <i class="fa-solid fa-bookmark"></i> -->
+                    ${recipe.bookmarked ? '<i class="fa-solid fa-bookmark"></i>' : ' <i class="fa-regular fa-bookmark"></i>'}
                     </div>
                   </div>
                 </div>
@@ -1188,10 +1202,10 @@ module.exports.Fraction = Fraction;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class BookMark {
-    addHandlerClickIcon(handler) {
+    addHandlerClickBookmark(handler) {
         document.addEventListener("click", function(e) {
             if (!e.target.closest(".bookmark__icon_background")) return;
-            console.log("Clicked!");
+            handler();
         });
     }
 }
