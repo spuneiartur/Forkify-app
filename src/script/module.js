@@ -5,9 +5,54 @@ class Module {
   activeRecipe;
   state = {
     recipes: [],
+    bookmarkedRecipes: [],
     currentPage: 1,
     resultsPerPage: RESULT_PER_PAGE,
   };
+
+  readLocalStorage() {
+    const storage = localStorage.getItem('bookmarks');
+    if (storage) {
+      this.state.bookmarkedRecipes = JSON.parse(storage);
+    }
+  }
+
+  writeLocalStorage() {
+    this.clearLocalStorage();
+    localStorage.setItem(
+      'bookmarks',
+      JSON.stringify(this.state.bookmarkedRecipes)
+    );
+  }
+
+  clearLocalStorage() {
+    localStorage.clear('bookmarks');
+  }
+
+  bookmarkRecipe() {
+    console.log(this.state.bookmarkedRecipes);
+    this.state.bookmarkedRecipes.push(this.activeRecipe);
+    this.activeRecipe.bookmarked = true;
+    this.writeLocalStorage();
+  }
+
+  unbookmarkRecipe() {
+    const index = this.state.bookmarkedRecipes.indexOf(this.activeRecipe);
+    this.state.bookmarkedRecipes.splice(index, 1);
+    this.activeRecipe.bookmarked = false;
+    this.writeLocalStorage();
+  }
+
+  checkRecipeBookmarked(recipe = this.activeRecipe) {
+    if (
+      this.state.bookmarkedRecipes.find(rec => rec.id === this.activeRecipe.id)
+    )
+      return true;
+    if (
+      !this.state.bookmarkedRecipes.find(rec => rec.id === this.activeRecipe.id)
+    )
+      return false;
+  }
 
   loadPageResults(goToPage) {
     const maxPage = Math.ceil(
@@ -28,8 +73,13 @@ class Module {
       const { recipe } = data;
       this.activeRecipe = recipe;
       this.activeRecipe.currentServings = this.activeRecipe.servings;
+      if (this.checkRecipeBookmarked()) {
+        this.activeRecipe.bookmarked = true;
+      } else {
+        this.activeRecipe.bookmarked = false;
+      }
 
-      return recipe;
+      return this.activeRecipe;
     } catch (err) {
       throw err;
     }

@@ -2,10 +2,10 @@ class RecipePreview {
   _prevBtn = document.querySelector('.pagination__btn--left');
   _nextBtn = document.querySelector('.pagination__btn--right');
   _buttons = document.querySelectorAll('.pagination__btn');
-  _recipesListContainer = document.querySelector('.recipe__preview_container');
+  _recipesListContainer = document.querySelector('.recipe--preview-container');
   _recipeElement = document.querySelector('.recipe__list_element');
   _spinnerContainer = document.querySelector(
-    '.loading__animation_search-results'
+    '.loading--animation-search-results'
   );
 
   startAnimation() {

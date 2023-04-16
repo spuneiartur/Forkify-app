@@ -2,9 +2,12 @@ import searchView from './views/searchView.js';
 import module from './module.js';
 import recipePreview from './views/recipePreview.js';
 import recipeView from './views/recipeView.js';
+import bookmarkView from './views/bookmarkView.js';
 function App() {
   location.hash = '';
-
+  module.readLocalStorage();
+  bookmarkView.renderView(module.state.bookmarkedRecipes);
+  // module.clearLocalStorage();
   async function controlSearch() {
     try {
       const query = searchView.getQuery();
@@ -53,12 +56,27 @@ function App() {
     recipeView.renderView(module.activeRecipe);
   }
 
+  function controlBookMarkClicked() {
+    if (module.checkRecipeBookmarked()) {
+      module.unbookmarkRecipe();
+    } else {
+      module.bookmarkRecipe();
+    }
+    recipeView.clearHTML();
+    recipeView.renderView(module.activeRecipe);
+    bookmarkView.renderView(module.state.bookmarkedRecipes);
+  }
+
+  function controlBookmarkOnHover() {}
+
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);
     recipePreview.addHandlerPagination(controlPagination);
     recipePreview.addHandlerPreviewClick();
     recipeView.addHandlerHashChange(controlHashChange);
     recipeView.addHandlerChangeServings(controlChangeServings);
+    bookmarkView.addHandlerClickBookmark(controlBookMarkClicked);
+    bookmarkView.addHandlerHoverBookmark(controlBookmarkOnHover);
   }
   addingHandlers();
 }

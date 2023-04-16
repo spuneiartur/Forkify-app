@@ -212,12 +212,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .nav__bookmarks {
+  cursor: pointer;
   margin: 0 1rem;
+  position: relative;
 }
 
 .fa-bookmark {
   color: var(--color-grad-2);
   margin: 0 .5rem;
+}
+
+.bookmark__list_container {
+  z-index: 1;
+  visibility: hidden;
+  box-shadow: 0 .8rem 5rem 2rem rgba(#7a7978, .1);
+  width: 30rem;
+  max-height: 5rem;
+  opacity: .1;
+  background-color: #fff;
+  transition: opacity .3s ease-in-out;
+  position: absolute;
+  top: 6.5rem;
+  right: -2.5rem;
+}
+
+.nav__bookmarks:hover .bookmark__list_container {
+  opacity: 1;
+  visibility: visible;
 }
 
 .burger__btn_container {
@@ -561,6 +582,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fa-circle-plus {
+  cursor: pointer;
   transition: all .2s;
 }
 
@@ -569,6 +591,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .fa-circle-minus {
+  cursor: pointer;
   transition: all .2s;
 }
 
@@ -582,6 +605,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .bookmark__icon_background {
   background-image: linear-gradient(to right bottom, var(--color-grad-1), var(--color-grad-2));
+  cursor: pointer;
   border-radius: 50%;
   padding: 1.3rem 1rem;
   transition: all .3s;
