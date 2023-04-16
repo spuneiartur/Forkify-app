@@ -571,6 +571,7 @@ var _bookmarkViewJsDefault = parcelHelpers.interopDefault(_bookmarkViewJs);
 function App() {
     location.hash = "";
     (0, _moduleJsDefault.default).readLocalStorage();
+    (0, _bookmarkViewJsDefault.default).renderView((0, _moduleJsDefault.default).state.bookmarkedRecipes);
     // module.clearLocalStorage();
     async function controlSearch() {
         try {
@@ -615,9 +616,9 @@ function App() {
         else (0, _moduleJsDefault.default).bookmarkRecipe();
         (0, _recipeViewJsDefault.default).clearHTML();
         (0, _recipeViewJsDefault.default).renderView((0, _moduleJsDefault.default).activeRecipe);
+        (0, _bookmarkViewJsDefault.default).renderView((0, _moduleJsDefault.default).state.bookmarkedRecipes);
     }
-    // 1) change icon depending if recipe is bookmarked or not
-    // 2) save bookamrkedRecipes in local storage and init it every time the app starts
+    function controlBookmarkOnHover() {}
     function addingHandlers() {
         (0, _searchViewJsDefault.default).addHandlerSearch(controlSearch);
         (0, _recipePreviewJsDefault.default).addHandlerPagination(controlPagination);
@@ -625,6 +626,7 @@ function App() {
         (0, _recipeViewJsDefault.default).addHandlerHashChange(controlHashChange);
         (0, _recipeViewJsDefault.default).addHandlerChangeServings(controlChangeServings);
         (0, _bookmarkViewJsDefault.default).addHandlerClickBookmark(controlBookMarkClicked);
+        (0, _bookmarkViewJsDefault.default).addHandlerHoverBookmark(controlBookmarkOnHover);
     }
     addingHandlers();
 }
@@ -708,19 +710,19 @@ class Module {
     }
     bookmarkRecipe() {
         console.log(this.state.bookmarkedRecipes);
-        this.state.bookmarkedRecipes.push(this.activeRecipe.id);
+        this.state.bookmarkedRecipes.push(this.activeRecipe);
         this.activeRecipe.bookmarked = true;
         this.writeLocalStorage();
     }
     unbookmarkRecipe() {
-        const index = this.state.bookmarkedRecipes.indexOf(this.activeRecipe.id);
+        const index = this.state.bookmarkedRecipes.indexOf(this.activeRecipe);
         this.state.bookmarkedRecipes.splice(index, 1);
         this.activeRecipe.bookmarked = false;
         this.writeLocalStorage();
     }
     checkRecipeBookmarked(recipe = this.activeRecipe) {
-        if (this.state.bookmarkedRecipes.includes(this.activeRecipe.id)) return true;
-        if (!this.state.bookmarkedRecipes.includes(this.activeRecipe.id)) return false;
+        if (this.state.bookmarkedRecipes.find((rec)=>rec.id === this.activeRecipe.id)) return true;
+        if (!this.state.bookmarkedRecipes.find((rec)=>rec.id === this.activeRecipe.id)) return false;
     }
     loadPageResults(goToPage) {
         const maxPage = Math.ceil(this.state.recipes.length / this.state.resultsPerPage);
@@ -771,9 +773,9 @@ class RecipePreview {
     _prevBtn = document.querySelector(".pagination__btn--left");
     _nextBtn = document.querySelector(".pagination__btn--right");
     _buttons = document.querySelectorAll(".pagination__btn");
-    _recipesListContainer = document.querySelector(".recipe__preview_container");
+    _recipesListContainer = document.querySelector(".recipe--preview-container");
     _recipeElement = document.querySelector(".recipe__list_element");
-    _spinnerContainer = document.querySelector(".loading__animation_search-results");
+    _spinnerContainer = document.querySelector(".loading--animation-search-results");
     startAnimation() {
         this._spinnerContainer.classList.remove("hidden");
     }
@@ -1202,6 +1204,49 @@ module.exports.Fraction = Fraction;
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 class BookMark {
+    _bookmarkListBtn = document.querySelector(".nav__bookmarks");
+    _bookmarkListContainer = document.querySelector(".bookmark__list_container");
+    _spinnerContainer = document.querySelector(".bookmark__anumation_container");
+    startAnimation() {
+        this._spinnerContainer.classList.remove("hidden");
+    }
+    endAnimation() {
+        this._spinnerContainer.classList.add("hidden");
+    }
+    hideMessage() {
+        this._messageContainer.classList.add("hidden");
+    }
+    clearHTML() {
+        this._bookmarkListContainer.innerHTML = "";
+    }
+    renderContent(recipes) {
+        let markup = "";
+        recipes.forEach((recipe)=>markup += `
+    <div class="recipe__list_element" data-id="${recipe.id}">
+      <div class="preview__img_container _ibg">
+        <img
+          src="${recipe.image_url}"
+          alt="recipe_img_preview"
+        />
+      </div>
+      <span class="preview__title"
+        >${recipe.title}</span
+      >
+      <span class="preview__subtitle">${recipe.publisher}</span>
+    </div>`);
+        return markup;
+    }
+    renderView(bookmarkedRecipes) {
+        const markup = this.renderContent(bookmarkedRecipes);
+        this._bookmarkListContainer.querySelector(".recipe__preview_container").innerHTML = "";
+        this._bookmarkListContainer.querySelector(".recipe__preview_container").insertAdjacentHTML("afterbegin", markup);
+    }
+    addHandlerHoverBookmark(handler) {
+        console.log(this._bookmarkListBtn);
+        this._bookmarkListBtn.addEventListener("mouseover", function(e) {
+            handler();
+        });
+    }
     addHandlerClickBookmark(handler) {
         document.addEventListener("click", function(e) {
             if (!e.target.closest(".bookmark__icon_background")) return;

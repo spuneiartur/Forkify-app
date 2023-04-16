@@ -6,6 +6,7 @@ import bookmarkView from './views/bookmarkView.js';
 function App() {
   location.hash = '';
   module.readLocalStorage();
+  bookmarkView.renderView(module.state.bookmarkedRecipes);
   // module.clearLocalStorage();
   async function controlSearch() {
     try {
@@ -63,9 +64,10 @@ function App() {
     }
     recipeView.clearHTML();
     recipeView.renderView(module.activeRecipe);
+    bookmarkView.renderView(module.state.bookmarkedRecipes);
   }
-  // 1) change icon depending if recipe is bookmarked or not
-  // 2) save bookamrkedRecipes in local storage and init it every time the app starts
+
+  function controlBookmarkOnHover() {}
 
   function addingHandlers() {
     searchView.addHandlerSearch(controlSearch);
@@ -74,6 +76,7 @@ function App() {
     recipeView.addHandlerHashChange(controlHashChange);
     recipeView.addHandlerChangeServings(controlChangeServings);
     bookmarkView.addHandlerClickBookmark(controlBookMarkClicked);
+    bookmarkView.addHandlerHoverBookmark(controlBookmarkOnHover);
   }
   addingHandlers();
 }

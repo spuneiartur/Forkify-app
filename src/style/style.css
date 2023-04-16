@@ -292,6 +292,7 @@ h6 {
 .nav__bookmarks {
     margin: 0 1rem;
     cursor: pointer;
+    position: relative;
 }
 
 .fa-bookmark {
@@ -300,6 +301,30 @@ h6 {
 }
 
 .add__bookmark_text {}
+
+
+
+.bookmark__list_container {
+    position: absolute;
+    top: 6.5rem;
+    right: -2.5rem;
+    z-index: 1;
+    visibility: hidden;
+    box-shadow: 0 0.8rem 5rem 2rem rgba(#7a7978, 0.1);
+    /* overflow-y: scroll; */
+    width: 30rem;
+    max-height: 5rem;
+    opacity: 0.1;
+    transition: opacity 0.3s ease-in-out;
+    background-color: #ffffff;
+
+
+}
+
+.nav__bookmarks:hover .bookmark__list_container {
+    opacity: 1;
+    visibility: visible;
+}
 
 .burger__btn_container {
     display: none;

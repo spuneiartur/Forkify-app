@@ -31,22 +31,26 @@ class Module {
 
   bookmarkRecipe() {
     console.log(this.state.bookmarkedRecipes);
-    this.state.bookmarkedRecipes.push(this.activeRecipe.id);
+    this.state.bookmarkedRecipes.push(this.activeRecipe);
     this.activeRecipe.bookmarked = true;
     this.writeLocalStorage();
   }
 
   unbookmarkRecipe() {
-    const index = this.state.bookmarkedRecipes.indexOf(this.activeRecipe.id);
+    const index = this.state.bookmarkedRecipes.indexOf(this.activeRecipe);
     this.state.bookmarkedRecipes.splice(index, 1);
     this.activeRecipe.bookmarked = false;
     this.writeLocalStorage();
   }
 
   checkRecipeBookmarked(recipe = this.activeRecipe) {
-    if (this.state.bookmarkedRecipes.includes(this.activeRecipe.id))
+    if (
+      this.state.bookmarkedRecipes.find(rec => rec.id === this.activeRecipe.id)
+    )
       return true;
-    if (!this.state.bookmarkedRecipes.includes(this.activeRecipe.id))
+    if (
+      !this.state.bookmarkedRecipes.find(rec => rec.id === this.activeRecipe.id)
+    )
       return false;
   }
 
